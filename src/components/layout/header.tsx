@@ -7,7 +7,7 @@ const Header = () => {
   const pathname = usePathname();
 
   const navigation = [
-    { name: "Blog", href: "/blog" },
+    { name: "Posts", href: "/posts" },
     { name: "About", href: "/about" },
   ];
 
@@ -15,7 +15,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
-          href="/blog"
+          href="/posts"
           className="text-xl font-bold"
           aria-label="홈으로 이동"
         >
