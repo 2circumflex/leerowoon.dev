@@ -23,11 +23,11 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="mx-auto max-w-screen-xl px-4 backdrop-blur-md">
         <div className="h-6"></div>
-        <div className="mx-auto max-w-[1000px] rounded-xl border border-gray-300 bg-white/70 dark:border-gray-800 dark:bg-gray-900/40 overflow-hidden">
+        <div className="mx-auto max-w-[1000px] rounded-xl border border-gray-300 bg-white/70 dark:border-gray-700 dark:bg-gray-800/20 overflow-hidden">
           <div className="flex h-12 items-center justify-between px-3">
             <Link
               href="/posts"
-              className="ml-2 text-xl font-bold text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              className="ml-3 text-xl font-bold text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               aria-label="홈으로 이동"
             >
               leerow

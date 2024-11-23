@@ -16,22 +16,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="ko"
-      className="h-full scroll-my-20 scroll-smooth overflow-y-scroll"
-    >
-      <body className="font-pretendard">
+    <html lang="ko" className="h-full scroll-smooth overflow-y-scroll">
+      <body className="font-pretendard flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="mt-[64px] flex flex-1 flex-col">{children}</main>
-            <Footer />
-          </div>
+          <Header />
+          <main className="flex flex-1">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
