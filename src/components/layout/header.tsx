@@ -11,8 +11,8 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
 
   const navigation = [
-    { name: "posts", href: "/posts" },
-    { name: "about", href: "/about" },
+    { name: "Posts", href: "/posts" },
+    { name: "About", href: "/about" },
   ];
 
   const handleThemeToggle = () => {
