@@ -21,7 +21,7 @@ const Footer = () => {
         </Link>
       </div>
       <div className="flex justify-center text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} leerow. All rights reserved.
+        © {new Date().getFullYear()} lrow. All rights reserved.
       </div>
     </footer>
   );

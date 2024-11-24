@@ -20,19 +20,22 @@ interface CalloutObjByType {
 const calloutObj: CalloutObjByType = {
   normal: {
     icon: Icon.Normal,
-    className: "text-secondary-foreground bg-secondary",
+    className:
+      "text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900/50",
   },
   info: {
     icon: Icon.Info,
-    className: "text-informative-foreground bg-informative",
+    className:
+      "text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50",
   },
   warn: {
     icon: Icon.Warn,
-    className: "text-warning-foreground bg-warning",
+    className:
+      "text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/50",
   },
   danger: {
     icon: Icon.Danger,
-    className: "text-destructive-foreground bg-destructive",
+    className: "text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/50",
   },
 };
 
