@@ -3,6 +3,7 @@ export interface PostMatter {
   desc: string;
   date: Date;
   thumbnail: string;
+  tags: string[];
 }
 
 export interface PostMatterWithContent extends PostMatter {

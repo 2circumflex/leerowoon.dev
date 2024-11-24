@@ -21,9 +21,9 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="mx-auto max-w-screen-xl px-4 backdrop-blur-md">
-        <div className="h-6"></div>
-        <div className="mx-auto max-w-[1000px] rounded-xl border border-gray-300 bg-white/70 dark:border-gray-700 dark:bg-gray-800/20 overflow-hidden">
+      <div className="mx-auto max-w-screen-xl px-4">
+        <div className="h-6 backdrop-blur-md"></div>
+        <div className="mx-auto max-w-[1000px] bg-background rounded-xl border overflow-hidden">
           <div className="flex h-12 items-center justify-between px-3">
             <Link
               href="/posts"
