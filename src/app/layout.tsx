@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
@@ -24,9 +22,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="flex flex-1">{children}</main>
-          <Footer />
+          {children}
         </ThemeProvider>
       </body>
     </html>
