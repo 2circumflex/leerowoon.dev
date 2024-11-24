@@ -13,7 +13,7 @@ export default async function PostDetailPage({
   const post = await getPost(slug);
 
   return (
-    <div className="container mx-auto max-w-[1000px] mt-44 mb-16 flex flex-col">
+    <div className="container mx-auto max-w-[700px] mt-44 mb-16 flex flex-col">
       <PostHeader post={post} />
     </div>
   );
