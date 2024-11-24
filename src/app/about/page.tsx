@@ -2,6 +2,8 @@ import Image from "next/image";
 import { MdEmail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
+import SkillText from "@/components/about/skill-text";
+import IconWrapper from "@/components/about/icon-wrapper";
 
 const SKILLS = [
   "React Native",
@@ -81,19 +83,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
-const IconWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="p-2 rounded-md border dark:border-gray-700/80 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200">
-      {children}
-    </div>
-  );
-};
-
-const SkillText = ({ text }: { text: string }) => {
-  return (
-    <div className="rounded-md px-2.5 py-1 text-xs text-primary-foreground transition-colors text-nowrap bg-primary/80 hover:bg-primary/60">
-      {text}
-    </div>
-  );
-};
