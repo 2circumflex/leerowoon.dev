@@ -25,7 +25,7 @@ const SKILLS = [
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto max-w-[700px] mt-40 mb-16 flex flex-col gap-10 p-2 px-6">
+    <div className="container mx-auto max-w-[750px] mt-40 mb-16 flex flex-col gap-10 p-2 px-6">
       <section className="flex flex-col justify-center items-center gap-4">
         <Image
           className="rounded-full size-28"

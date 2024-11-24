@@ -1,6 +1,8 @@
-import { Post } from "@/lib/types";
+import Image from "next/image";
 import dayjs from "dayjs";
 import { FiCalendar } from "react-icons/fi";
+
+import { Post } from "@/lib/types";
 
 export default function PostHeader({ post }: { post: Post }) {
   return (
@@ -12,9 +14,13 @@ export default function PostHeader({ post }: { post: Post }) {
           {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
-      <div className="w-full my-14 px-24 mx-auto">
-        <hr className="w-full" />
-      </div>
+      <Image
+        className="mt-8 mb-10 w-full aspect-video object-cover rounded-lg border dark:border-none"
+        src={post.thumbnail}
+        alt={post.title}
+        width={800}
+        height={450}
+      />
     </div>
   );
 }
