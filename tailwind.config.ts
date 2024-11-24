@@ -145,6 +145,9 @@ const config: Config = {
             "[data-highlighted-line]": {
               backgroundColor: "rgba(253, 224, 71, 0.2)",
             },
+            ".dark [data-highlighted-line]": {
+              backgroundColor: "rgba(147, 197, 253, 0.15)",
+            },
 
             u: {
               textUnderlineOffset: "4px",

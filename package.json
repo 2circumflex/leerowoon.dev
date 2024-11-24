@@ -27,6 +27,7 @@
     "rehype-slug": "^6.0.0",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
+    "shiki": "^1.23.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
   },
