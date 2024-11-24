@@ -1,12 +1,20 @@
-export default function PostDetailPage({
-  params,
-}: {
+import { getPost } from "@/lib/post";
+import PostHeader from "@/components/posts/post-header";
+
+export const dynamicParams = false;
+
+type PostDetailPageProps = {
   params: { slug: string };
-}) {
+};
+
+export default async function PostDetailPage({
+  params: { slug },
+}: PostDetailPageProps) {
+  const post = await getPost(slug);
+
   return (
-    <div className="container mx-auto max-w-[1000px] mt-32 mb-16 flex flex-col p-2 px-6">
-      <h1 className="text-3xl font-bold">Blog Post: {params.slug}</h1>
-      {/* 블로그 게시글 내용이 들어갈 자리 */}
+    <div className="container mx-auto max-w-[1000px] mt-44 mb-16 flex flex-col">
+      <PostHeader post={post} />
     </div>
   );
 }
