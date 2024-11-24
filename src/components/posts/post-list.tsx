@@ -20,7 +20,7 @@ export default async function PostList() {
 const PostCard = ({ post }: { post: Post }) => {
   return (
     <Link key={post.slug} href={`/posts/${post.slug}`}>
-      <article className="p-4 w-full flex flex-col rounded-lg border hover:bg-muted/35 transition-colors">
+      <article className="p-4 w-full flex flex-col rounded-lg border transition-colors group">
         <Image
           className="w-full aspect-video object-cover rounded-lg"
           src={post.thumbnail}
@@ -29,7 +29,7 @@ const PostCard = ({ post }: { post: Post }) => {
           height={450}
           priority={false}
         />
-        <h2 className="mt-3 text-2xl font-bold line-clamp-2 min-h-[3.5rem] leading-7 text-foreground hover:text-primary transition-colors">
+        <h2 className="mt-3 text-2xl font-bold line-clamp-2 min-h-[3.5rem] leading-7 text-foreground group-hover:text-primary transition-colors duration-300">
           {post.title}
         </h2>
         <p className="mt-3 text-muted-foreground line-clamp-2 min-h-[3rem] leading-6">
