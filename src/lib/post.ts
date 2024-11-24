@@ -43,3 +43,9 @@ export const getSortedPostList = async (): Promise<Post[]> => {
   const postList = await getPostList();
   return postList.sort((a, b) => (a.date > b.date ? -1 : 1));
 };
+
+export const getPost = async (slug: string) => {
+  const postPath = `${POSTS_PATH}/${slug}.mdx`;
+  const post = await parsePost(postPath);
+  return post;
+};
