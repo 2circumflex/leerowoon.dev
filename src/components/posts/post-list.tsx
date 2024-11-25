@@ -2,15 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
 
-import { getPostList } from "@/lib/post";
+import { getDescSortedPostList } from "@/lib/post";
 import { Post } from "@/lib/types";
 
 export default async function PostList() {
-  const postlist = await getPostList();
+  const postlist = await getDescSortedPostList();
 
   return (
     <div className="mx-auto max-w-[1000px] grid grid-cols-1 md:grid-cols-2 gap-6">
-      {[...postlist, ...postlist, ...postlist].map((post) => (
+      {postlist.map((post) => (
         <PostCard key={post.slug} post={post} />
       ))}
     </div>
