@@ -1,8 +1,13 @@
-import { getPost } from "@/lib/post";
+import { getPost, getPostPaths, parsePostFileName } from "@/lib/post";
 import PostHeader from "@/components/post-detail/post-header";
 import PostBody from "@/components/post-detail/post-body";
 
 export const dynamicParams = false;
+
+export function generateStaticParams() {
+  const postPaths = getPostPaths();
+  return postPaths.map((postPath) => ({ slug: parsePostFileName(postPath) }));
+}
 
 type PostDetailPageProps = {
   params: { slug: string };

@@ -33,8 +33,13 @@ const parsePostMatterWithContent = async (
   return { ...(data as PostMatter), content };
 };
 
-export const getPostList = async (): Promise<Post[]> => {
+export const getPostPaths = (): string[] => {
   const postPaths: string[] = sync(`${POSTS_PATH}/*.mdx`);
+  return postPaths;
+};
+
+export const getPostList = async (): Promise<Post[]> => {
+  const postPaths = getPostPaths();
   const postList = await Promise.all(
     postPaths.map((postPath) => parsePost(postPath))
   );
