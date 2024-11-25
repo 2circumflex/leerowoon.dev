@@ -13,14 +13,14 @@ const SKILLS = [
   "Next.js",
   "Node.js",
   "Nest.js",
-  "JavaScript",
+  "Docker",
+  "Git",
+  "앱 취약성 점검",
   "TypeScript",
   "Java",
   "Swift",
   "Objective-C",
-  "Git",
-  "Docker",
-  "앱 취약성 점검",
+  "...",
 ];
 
 export default function AboutPage() {
@@ -29,7 +29,7 @@ export default function AboutPage() {
       <section className="flex flex-col justify-center items-center gap-4">
         <Image
           className="rounded-full size-28"
-          src="/profile_square.jpg"
+          src="/images/profile_square.jpg"
           alt="profile"
           width={120}
           height={120}
