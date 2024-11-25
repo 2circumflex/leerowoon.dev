@@ -26,16 +26,16 @@ const calloutObj: CalloutObjByType = {
   info: {
     icon: Icon.Info,
     className:
-      "text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50",
+      "text-gray-700 dark:text-gray-300 bg-blue-100 dark:bg-blue-900/50",
   },
   warn: {
     icon: Icon.Warn,
     className:
-      "text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/50",
+      "text-gray-700 dark:text-gray-300 bg-yellow-100 dark:bg-yellow-900/50",
   },
   danger: {
     icon: Icon.Danger,
-    className: "text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/50",
+    className: "text-gray-700 dark:text-gray-300 bg-red-100 dark:bg-red-900/50",
   },
 };
 
