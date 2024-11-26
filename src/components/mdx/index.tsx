@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MDXComponents } from "mdx/types";
 
 import { Callout } from "./callout";
