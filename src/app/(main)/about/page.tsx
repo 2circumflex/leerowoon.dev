@@ -53,7 +53,7 @@ const SKILLS = [
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col gap-10 p-2 px-6">
+    <div className="container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col gap-14 p-2 px-6">
       <section className="flex flex-col justify-center items-center gap-4">
         <Image
           className="rounded-full size-28"
@@ -92,17 +92,41 @@ export default function AboutPage() {
           </Link>
         </div>
       </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">About</h2>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-2xl font-bold">소개</h2>
         <p className="leading-7 text-muted-foreground">
-          제품에 대한 책임감과 열정을 지니고 있습니다. <br />
-          10년 이상의 경력을 모바일 앱 개발에 집중해왔으며, 현재는 React
-          Native를 활용한 앱 개발에 주력하고 있습니다.
+          안녕하세요, 이로운입니다. 👋
+          <br />
+          모바일 앱 개발에 주력해왔으며, 현재는 React Native를 활용한 앱 개발에
+          집중하고 있습니다.
+          <br />
+          하지만 특정 기술에만 국한되지 않고, 필요한 기술이라면 언제든 배우고
+          활용하며 성장합니다.
         </p>
+        <div className="flex flex-col gap-2">
+          <h3 className="text-md font-medium underline underline-offset-4">
+            저는 책임감이 있습니다.
+          </h3>
+          <p className="leading-7 text-muted-foreground">
+            문제가 발생했을 때 회피하지 않고 끝까지 해결하려는 태도로 임합니다.
+            맡은 일에 대해 책임감을 가지고 끝까지 완수하며, 주니어 시절부터
+            지금까지 모든 프로젝트를 성공적으로 마무리해온 경험이 있습니다.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <h3 className="text-md font-medium underline underline-offset-4">
+            협업과 의사소통을 중요하게 생각합니다.
+          </h3>
+          <p className="leading-7 text-muted-foreground">
+            단순히 주어진 업무를 수행하는 데 그치지 않고, 능동적이고 열린 자세로
+            팀원들과 협력합니다. 팀의 목표와 비전을 달성하기 위해 적극적으로
+            의사소통하고 함께 해결책을 찾아갑니다.
+          </p>
+        </div>
       </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Skills</h2>
-        <div className="flex flex-wrap gap-1 gap-y-2">
+      <section className="flex flex-col gap-5">
+        <h2 className="text-2xl font-bold">스킬</h2>
+        <div className="mt-1 flex flex-wrap gap-1.5 gap-y-2">
           {SKILLS.map((skill) => (
             <SkillText key={skill} text={skill} />
           ))}
