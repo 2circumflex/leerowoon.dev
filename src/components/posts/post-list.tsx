@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import dayjs from "dayjs";
 
 import { getDescSortedPostList } from "@/lib/post";
 import { Post } from "@/lib/types";
+import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
 export default async function PostList() {
   const postlist = await getDescSortedPostList();
@@ -21,7 +21,7 @@ const PostCard = ({ post }: { post: Post }) => {
   return (
     <Link key={post.slug} href={`/posts/${post.slug}`}>
       <article className="p-4 w-full flex flex-col rounded-lg border transition-colors group">
-        <Image
+        <FixedSizeImgWithPlaceholder
           className="w-full aspect-video object-cover rounded-lg"
           src={post.thumbnail}
           alt={post.title}
