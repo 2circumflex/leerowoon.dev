@@ -14,6 +14,16 @@ export default function PostHeader({ post }: { post: Post }) {
           {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
+      <div className="mt-4 flex flex-wrap justify-center items-center gap-2 gap-y-0">
+        {post.tags.map((tag) => (
+          <p
+            key={tag}
+            className="text-sm text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800 rounded-full px-2.5 py-1"
+          >
+            {tag}
+          </p>
+        ))}
+      </div>
       <FixedSizeImgWithPlaceholder
         className="mt-8 mb-10 w-full aspect-video object-cover rounded-lg border dark:border-none"
         src={post.thumbnail}
