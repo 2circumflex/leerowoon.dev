@@ -55,7 +55,7 @@ export default async function PostDetailPage({
   const post = await getPost(slug);
 
   return (
-    <div className="prose dark:prose-invert container mx-auto max-w-[750px] mt-44 mb-16 flex flex-col p-2 px-6">
+    <div className="prose dark:prose-invert container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col p-2 px-6">
       <PostHeader post={post} />
       <PostBody post={post} />
       <hr />
