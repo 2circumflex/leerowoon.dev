@@ -1,8 +1,8 @@
-import Image from "next/image";
 import dayjs from "dayjs";
 import { FiCalendar } from "react-icons/fi";
 
 import { Post } from "@/lib/types";
+import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
 export default function PostHeader({ post }: { post: Post }) {
   return (
@@ -14,7 +14,7 @@ export default function PostHeader({ post }: { post: Post }) {
           {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
-      <Image
+      <FixedSizeImgWithPlaceholder
         className="mt-8 mb-10 w-full aspect-video object-cover rounded-lg border dark:border-none"
         src={post.thumbnail}
         alt={post.title}
