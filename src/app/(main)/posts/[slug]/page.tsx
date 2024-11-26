@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import PostHeader from "@/components/post-detail/post-header";
 import PostBody from "@/components/post-detail/post-body";
 import { getPost, getPostPaths, parsePostFileName } from "@/lib/post";
-import { baseUrl, siteName } from "@/lib/metadata";
+import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 
 export async function generateMetadata({
   params: { slug },
@@ -11,25 +11,27 @@ export async function generateMetadata({
   const post = await getPost(slug);
   const title = `${post.title} | ${siteName}`;
   const description = post.desc;
-  const imageURL = `${baseUrl}/${post.thumbnail}`;
+  const imageURL = `${baseUrl}${post.thumbnail}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: `${baseUrl}/posts/${post.slug}`,
+    },
     openGraph: {
+      ...siteMetadata.openGraph,
       title,
       description,
-      locale: "ko_KR",
       type: "article",
-      siteName: siteName,
       publishedTime: post.date.toISOString(),
       url: `${baseUrl}/posts/${post.slug}`,
       images: [imageURL],
     },
     twitter: {
+      ...siteMetadata.twitter,
       title,
       description,
-      card: "summary_large_image",
       images: [imageURL],
     },
   };
