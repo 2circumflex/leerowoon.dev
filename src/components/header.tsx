@@ -27,10 +27,10 @@ const Header = () => {
           <div className="flex h-12 items-center justify-between px-3">
             <Link
               href="/posts"
-              className="ml-3 text-xl font-bold text-gray-700 dark:text-gray-300"
+              className="ml-3 text-lg font-bold text-gray-700 dark:text-gray-300"
               aria-label="홈으로 이동"
             >
-              <span className="text-primary">lrow</span>.dev
+              <span className="text-primary">leerowoon</span>.dev
             </Link>
             <nav>
               <ul className="flex items-center gap-1">
