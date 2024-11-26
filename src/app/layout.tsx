@@ -10,12 +10,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className="h-full scroll-smooth overflow-y-scroll">
+    <html
+      lang="ko"
+      className="h-full scroll-smooth overflow-y-scroll"
+      suppressHydrationWarning
+    >
       <body className="font-pretendard flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
           disableTransitionOnChange
         >
           {children}
