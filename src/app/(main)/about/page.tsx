@@ -1,9 +1,37 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import { MdEmail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
+
 import SkillText from "@/components/about/skill-text";
 import IconWrapper from "@/components/about/icon-wrapper";
+import { baseUrl, siteName, siteMetadata } from "@/lib/metadata";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = `About | ${siteName}`;
+  const description = "";
+  const url = `${baseUrl}/about`;
+
+  return {
+    title: `About | ${siteName}`,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      ...siteMetadata.openGraph,
+      title,
+      description,
+      url,
+    },
+    twitter: {
+      ...siteMetadata.twitter,
+      title,
+      description,
+    },
+  };
+}
 
 const SKILLS = [
   "React Native",
