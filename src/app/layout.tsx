@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="font-pretendard flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           disableTransitionOnChange
         >
           {children}
