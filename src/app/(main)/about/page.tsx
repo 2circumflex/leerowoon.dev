@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Metadata } from "next";
 import { MdEmail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -7,6 +6,7 @@ import Link from "next/link";
 import SkillText from "@/components/about/skill-text";
 import IconWrapper from "@/components/about/icon-wrapper";
 import { baseUrl, siteName, siteMetadata } from "@/lib/metadata";
+import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = `About | ${siteName}`;
@@ -56,7 +56,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col gap-14 p-2 px-6">
       <section className="flex flex-col justify-center items-center gap-4">
-        <Image
+        <FixedSizeImgWithPlaceholder
           className="rounded-full size-28"
           src="/images/profile_square.jpg"
           alt="profile"
