@@ -25,7 +25,7 @@ export default function PostHeader({ post }: { post: Post }) {
         ))}
       </div>
       <FixedSizeImgWithPlaceholder
-        className="mt-8 mb-10 w-full aspect-video object-cover rounded-lg border dark:border-none"
+        className="mt-8 mb-0 w-full aspect-video object-cover rounded-lg border dark:border-none"
         src={post.thumbnail}
         alt={post.title}
         width={700}
