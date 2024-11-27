@@ -1,8 +1,12 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteMetadata } from "@/lib/metadata";
 
 export const metadata = siteMetadata;
+
+const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string;
 
 export default function RootLayout({
   children,
@@ -24,6 +28,7 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId={GA_ID} />
     </html>
   );
 }
