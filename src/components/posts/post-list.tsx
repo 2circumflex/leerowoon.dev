@@ -20,9 +20,9 @@ export default async function PostList() {
 const PostCard = ({ post }: { post: Post }) => {
   return (
     <Link key={post.slug} href={`/posts/${post.slug}`}>
-      <article className="p-4 w-full flex flex-col rounded-lg border transition-colors group">
+      <article className="p-4 w-full h-full flex flex-col rounded-lg border transition-colors group">
         <FixedSizeImgWithPlaceholder
-          className="w-full aspect-video object-cover rounded-lg"
+          className="w-full h-full aspect-video object-cover rounded-lg"
           src={post.thumbnail}
           alt={post.title}
           width={380}
