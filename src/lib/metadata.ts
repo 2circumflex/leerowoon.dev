@@ -31,7 +31,7 @@ export const siteMetadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_BASE_URL,
+    canonical: baseUrl,
   },
   openGraph: {
     title: title,
@@ -39,10 +39,10 @@ export const siteMetadata: Metadata = {
     locale: "ko_KR",
     type: "website",
     siteName: siteName,
-    url: process.env.NEXT_PUBLIC_BASE_URL,
+    url: baseUrl,
     images: [
       {
-        url: "/og-image.png",
+        url: `${baseUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: siteName,
@@ -53,7 +53,7 @@ export const siteMetadata: Metadata = {
     card: "summary_large_image",
     title: title,
     description: description,
-    images: ["/og-image.png"],
+    images: [`${baseUrl}/og-image.png`],
   },
   robots: {
     index: true,
