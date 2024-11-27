@@ -25,8 +25,8 @@ const PostCard = ({ post }: { post: Post }) => {
           className="w-full aspect-video object-cover rounded-lg"
           src={post.thumbnail}
           alt={post.title}
-          width={800}
-          height={450}
+          width={380}
+          height={214}
           priority={false}
         />
         <h2 className="mt-3 text-2xl font-bold line-clamp-2 min-h-[3.5rem] leading-7 text-foreground group-hover:text-primary transition-colors duration-300">

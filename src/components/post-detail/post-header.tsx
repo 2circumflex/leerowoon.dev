@@ -28,8 +28,8 @@ export default function PostHeader({ post }: { post: Post }) {
         className="mt-8 mb-10 w-full aspect-video object-cover rounded-lg border dark:border-none"
         src={post.thumbnail}
         alt={post.title}
-        width={800}
-        height={450}
+        width={700}
+        height={395}
       />
     </div>
   );

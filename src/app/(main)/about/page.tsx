@@ -60,8 +60,8 @@ export default function AboutPage() {
           className="rounded-full size-28"
           src="/images/profile_square.jpg"
           alt="profile"
-          width={120}
-          height={120}
+          width={112}
+          height={112}
         />
         <h1 className="text-3xl font-bold">이로운</h1>
         <p className="text-sm text-center">
