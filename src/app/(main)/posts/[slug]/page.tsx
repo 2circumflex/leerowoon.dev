@@ -10,19 +10,19 @@ export async function generateMetadata({
   params: { slug },
 }: PostDetailPageProps): Promise<Metadata> {
   const post = await getPost(slug);
-  const title = `${post.title} | ${siteName}`;
+  const pageTitle = post.title;
   const description = post.desc;
   const imageURL = `${baseUrl}${post.thumbnail}`;
 
   return {
-    title,
+    title: `${pageTitle} | ${siteName}`,
     description,
     alternates: {
       canonical: `${baseUrl}/posts/${post.slug}`,
     },
     openGraph: {
       ...siteMetadata.openGraph,
-      title,
+      title: pageTitle,
       description,
       type: "article",
       publishedTime: post.date.toISOString(),
@@ -31,7 +31,7 @@ export async function generateMetadata({
     },
     twitter: {
       ...siteMetadata.twitter,
-      title,
+      title: pageTitle,
       description,
       images: [imageURL],
     },

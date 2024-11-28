@@ -6,22 +6,22 @@ import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 export const dynamicParams = false;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = `Posts | ${siteName}`;
+  const pageTitle = "Posts";
   const url = `${baseUrl}/posts`;
 
   return {
-    title: `Posts | ${siteName}`,
+    title: `${pageTitle} | ${siteName}`,
     alternates: {
       canonical: url,
     },
     openGraph: {
       ...siteMetadata.openGraph,
-      title,
+      title: pageTitle,
       url,
     },
     twitter: {
       ...siteMetadata.twitter,
-      title,
+      title: pageTitle,
     },
   };
 }

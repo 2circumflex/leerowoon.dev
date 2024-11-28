@@ -9,26 +9,26 @@ import { baseUrl, siteName, siteMetadata } from "@/lib/metadata";
 import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = `About | ${siteName}`;
+  const pageTitle = "About";
   const description =
     "모바일 앱 개발에 주력하는 소프트웨어 엔지니어입니다. React Native를 활용한 앱 개발에 집중하며, iOS/Android 개발 경험을 보유하고 있습니다. 책임감 있는 개발과 원활한 팀 협업을 지향합니다.";
   const url = `${baseUrl}/about`;
 
   return {
-    title: `About | ${siteName}`,
+    title: `${pageTitle} | ${siteName}`,
     description,
     alternates: {
       canonical: url,
     },
     openGraph: {
       ...siteMetadata.openGraph,
-      title,
+      title: pageTitle,
       description,
       url,
     },
     twitter: {
       ...siteMetadata.twitter,
-      title,
+      title: pageTitle,
       description,
     },
   };
