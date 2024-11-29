@@ -1,3 +1,4 @@
+import Link from "next/link";
 import dayjs from "dayjs";
 import { FiCalendar } from "react-icons/fi";
 
@@ -23,12 +24,11 @@ export default function PostHeader({ post }: { post: Post }) {
       </div>
       <div className="mt-4 mb-0 flex flex-wrap gap-x-2 gap-y-1.5">
         {post.tags.map((tag) => (
-          <p
-            key={tag}
-            className="mt-0 mb-0 text-sm text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800 rounded-full px-2.5 py-2"
-          >
-            #{tag}
-          </p>
+          <Link href={`/posts?tag=${tag}`} key={tag} className="no-underline">
+            <p className="mt-0 mb-0 text-sm text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800 rounded-full px-2.5 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+              #{tag}
+            </p>
+          </Link>
         ))}
       </div>
     </div>

@@ -5,14 +5,34 @@ import { getDescSortedPostList } from "@/lib/post";
 import { Post } from "@/lib/types";
 import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
-export default async function PostList() {
+interface PostListProps {
+  selectedTag?: string;
+}
+
+export default async function PostList({ selectedTag }: PostListProps) {
   const postlist = await getDescSortedPostList();
 
+  const filteredPostList = selectedTag
+    ? postlist.filter((post) => post.tags.includes(selectedTag))
+    : postlist;
+
   return (
-    <div className="flex flex-col gap-16">
-      {postlist.map((post) => (
-        <PostCard key={post.slug} post={post} />
-      ))}
+    <div className="flex flex-col gap-4">
+      {selectedTag && (
+        <h1 className="text-2xl font-bold mb-8"># {selectedTag}</h1>
+      )}
+      {selectedTag && filteredPostList.length === 0 && (
+        <div className="text-center text-muted-foreground py-10">
+          해당 태그의 포스트가 없습니다.
+        </div>
+      )}
+      {filteredPostList.length > 0 && (
+        <div className="flex flex-col gap-16">
+          {filteredPostList.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
