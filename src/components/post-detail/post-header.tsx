@@ -21,11 +21,11 @@ export default function PostHeader({ post }: { post: Post }) {
           {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
-      <div className="mt-3 mb-0 flex flex-wrap gap-x-2 gap-y-0">
+      <div className="mt-4 mb-0 flex flex-wrap gap-x-2 gap-y-1.5">
         {post.tags.map((tag) => (
           <p
             key={tag}
-            className="text-sm text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800 rounded-full px-2.5 py-2"
+            className="mt-0 mb-0 text-sm text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800 rounded-full px-2.5 py-2"
           >
             #{tag}
           </p>
