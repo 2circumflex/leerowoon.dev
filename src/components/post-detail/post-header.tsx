@@ -16,9 +16,9 @@ export default function PostHeader({ post }: { post: Post }) {
         height={395}
       />
       <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
-      <div className="flex flex-row items-center gap-2">
-        <FiCalendar className="size-4 text-gray-500" />
-        <p className="text-sm text-gray-500">
+      <div className="flex flex-row items-center gap-2 text-muted-foreground/70">
+        <FiCalendar className="size-4" />
+        <p className="text-sm">
           {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
