@@ -21,10 +21,10 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="h-6 backdrop-blur-md"></div>
+      <div className="h-6"></div>
       <div className="mx-auto max-w-screen-xl px-4">
-        <div className="mx-auto max-w-[1000px] bg-background rounded-xl border overflow-hidden">
-          <div className="flex h-12 items-center justify-between px-3">
+        <div className="mx-auto max-w-[1000px] bg-background rounded-2xl border overflow-hidden">
+          <div className="flex h-14 items-center justify-between px-3">
             <Link
               href="/posts"
               className="ml-2 flex items-center text-lg font-bold text-gray-700 dark:text-gray-300"
