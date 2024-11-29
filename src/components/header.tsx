@@ -27,10 +27,17 @@ const Header = () => {
           <div className="flex h-12 items-center justify-between px-3">
             <Link
               href="/posts"
-              className="ml-2 text-lg font-bold text-gray-700 dark:text-gray-300"
+              className="ml-2 flex items-center text-lg font-bold text-gray-700 dark:text-gray-300"
               aria-label="홈으로 이동"
             >
-              <span className="text-primary">leerowoon</span>.dev
+              <span className="relative inline-block overflow-hidden group">
+                <p className="inline-block transition-transform duration-300 group-hover:-translate-y-full">
+                  <span className="text-primary">leerowoon</span>.dev
+                </p>
+                <p className="absolute left-0 inline-block translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+                  <span className="text-primary">이로운</span>개발
+                </p>
+              </span>
             </Link>
             <nav>
               <ul className="flex items-center gap-1">
