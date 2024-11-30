@@ -1,4 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+// @ts-check
+import withPlaiceholder from "@plaiceholder/next";
 
-export default nextConfig;
+/**
+ * @type {import('next').NextConfig}
+ */
+const config = {
+  // your Next.js config
+};
+
+export default withPlaiceholder(config);
