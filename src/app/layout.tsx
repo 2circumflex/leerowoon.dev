@@ -1,4 +1,5 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -29,6 +30,7 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
       <GoogleAnalytics gaId={GA_ID} />
+      <Analytics />
     </html>
   );
 }
