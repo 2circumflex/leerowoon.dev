@@ -3,8 +3,6 @@ import { Metadata } from "next";
 import PostList from "@/components/posts/post-list";
 import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 
-export const runtime = "edge";
-
 export const dynamicParams = false;
 
 interface PostsPageProps {
