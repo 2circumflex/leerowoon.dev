@@ -3,7 +3,7 @@ import path from "node:path";
 import { getPlaiceholder } from "plaiceholder";
 
 export const getBase64 = async (src: string) => {
-  const buffer = await fs.readFile(path.join("./public", src));
+  const buffer = await fs.readFile(path.join(process.cwd(), "public", src));
 
   const {
     metadata: { height, width },
