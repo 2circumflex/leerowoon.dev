@@ -1,0 +1,48 @@
+---
+title: "Expo 서버 중단 에러 'Error: EMFILE: too many open files, watch at FSEvent.FSWatcher._handle.onchange (node:internal/fs/watchers:207:21)' 해결"
+desc: "Expo에서 발생하는 'Error: EMFILE: too many open files, watch' 문제를 watchman 업그레이드를 통해 해결하는 방법을 소개합니다."
+date: 2024-12-09T13:17:23.170Z
+thumbnail: /posts/expo-watchman-error/thumbnail.png
+tags: ["expo", "react-native"]
+---
+
+## 에러 발생
+
+`npx expo start` 명령을 실행하면 Expo 개발 서버가 시작되고 정상적으로 작동하는 것처럼 보이지만, 몇 초 후 다음과 같은 에러가 발생하며 서버가 중단됩니다.
+
+```shell
+Error: EMFILE: too many open files, watch
+    at FSEvent.FSWatcher._handle.onchange (node:internal/fs/watchers:207:21)
+```
+
+## 해결 방법
+
+재부팅하면 잠시 동안은 정상적으로 작동하는 것 같지만, 시간이 지나 동일한 에러가 다시 발생했습니다.
+이는 근본적인 해결 방법이 아니었습니다. 😅
+
+검색을 해보니 watchman 관련 문제인 것으로 보입니다.
+다음 명령어로 watchman을 설치하라는 내용을 확인했습니다.
+
+```shell
+brew install watchman
+```
+
+하지만 저는 이미 Homebrew에 watchman 설치되어 있습니다.
+다음 명령어를 통해 watchman을 최신 버전으로 업그레이드하여 문제를 해결할 수 있었습니다.
+
+```shell {1}
+brew upgrade watchman
+
+==> Upgrading 1 outdated package:
+watchman 2024.10.07.00 -> 2024.12.02.00
+...
+```
+
+<Callout type="normal">
+  2024.10.07.00 버전에서 2024.12.02.00 버전으로 업그레이드 되었습니다.
+</Callout>
+
+### 참고 문서
+
+- [[ReactNative] Expo 서버 실행시 Error: EMFILE: too many open files, watch](https://i-ten.tistory.com/268)
+- [Error: EMFILE: too many open files, watch at FSEvent.FSWatcher.\_handle.onchange (node:internal/fs/watchers:207:21)](https://www.reddit.com/r/react/comments/1bksaiy/error_emfile_too_many_open_files_watch_at/)
