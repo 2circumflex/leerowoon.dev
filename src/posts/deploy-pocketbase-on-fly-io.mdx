@@ -1,0 +1,189 @@
+---
+title: "Fly.io에 PocketBase 배포하기"
+desc: "무료로 운영 가능한 Fly.io와 오픈소스 백엔드 PocketBase를 활용하여 서버를 구축하고 배포하는 방법을 설명합니다."
+date: 2024-12-18T09:00:00.000Z
+thumbnail: /posts/deploy-pocketbase-on-fly-io/thumbnail.png
+tags: ["fly.io", "pocketbase"]
+---
+
+## 들어가기 전에
+
+얼마전에 개발한 [피노키오 문구점 홈페이지](https://pinocchio-store.vercel.app/)의 방명록은 [PocketBase](https://pocketbase.io/) 사용해서 개발했습니다. [Fly.io](Fly.io)에 PocketBase를 올려서 백엔드를 구성했습니다. 이 스택을 선택한 이유를 설명하고 설치 방법을 정리합니다.
+
+## Fly.io와 PocketBase를 선택한 이유
+
+문구점 홈페이지를 운영하는데 두 가지를 조건을 충족하고 싶었습니다.
+
+- 첫 번째는 무료로 운영할 것
+- 두 번째는 간단히 구성하고 쉽게 사용할 수 있을 것
+
+방명록을 만드는데 DB가 필요했기 때문에, Next.js 앱 배포하는데 사용한 [Vercel](https://vercel.com/)을 알아봤습니다. `Hobby` 프랜은 DB가 1개만 무료이고 추가해서 사용 하려면 `Pro` 플랜이 필요했습니다. 이미 DB 1개를 사용중이라 패스했습니다.
+
+[Supabase](https://supabase.com/)도 검토했지만, `Free` 플랜에서는 7일 이상 사용하지 않을 경우 프로젝트가 일시 정지된다는 점이 걸렸습니다. 동네 문구점 홈페이지라 7일 이상 사용 안할 경우가 있을 것 같았고, 만들고 나서는 별로 신경쓰고 싶지 않았습니다.
+
+다른 방법을 찾아보던중 PocketBase를 발견했습니다. PocketBase는 단일 파일로 구성된 오픈소스 백엔드입니다. 여러가지 장점이 있지만, 제가 맘에 든 점은 다음과 같습니다.
+
+- [JavaScript SDK](https://github.com/pocketbase/js-sdk)를 제공하기 때문에 프론트엔드에서 연동하기 편함
+- Admin 웹이 제공되어 DB를 관리할 수 있음
+- SQLite를 사용해서 가볍고 빠르고 백업이 편함
+
+그리고 PocketBase를 배포할 플랫폼인 Fly.io 을 선택했습니다. 그 이유는 도커 컨테이너로 간편하게 배포 가능하고, 실질적으로 무료로 사용 가능한 가격 정책 때문입니다.
+
+2024년 10월 7일 기준 Fly.io는 플랜을 제공하지 않고 사용량 기반 청구(Pay As You Go) 요금제로 전환했습니다.
+
+- [Fly.io Resource Pricing](https://fly.io/docs/about/pricing/#discontinued-plans)
+
+하지만 $5 미만은 청구되지 않습니다.
+![$5 미만은 청구되지 않는다는 메일 내용](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-billing.png)
+
+저는 nrt 리전 `shared-cpu-1x@256MB` VM을 사용하고 있고, 트래픽이 거의 없어 무료로 사용 가능합니다.
+![nrt 리전 VM 가격](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-nrt-region.png)
+
+<Callout type="warn">
+  요금에 대한 정확한 내용은 문서를 확인하시길 바랍니다.
+</Callout>
+
+## flyctl 설치 및 로그인
+
+flyctl은 배포를 위해서 필요한 커맨드라인 유틸리티 입니다. Fly.io에서 계정을 생성하고, OS에 맞는 flyctl을 설치합니다.
+
+- [Install flyctl](https://fly.io/docs/flyctl/install/)
+
+macOS 사용자는 아래 명령어를 실행해 flyctl을 설치할 수 있습니다.
+
+```shell
+brew install flyctl
+```
+
+설치 후 로그인을 합니다.
+
+- [fly auth](https://fly.io/docs/flyctl/auth/)
+
+```shell
+fly auth login
+```
+
+## Dockerfile 생성
+
+PocketBase의 최신 버전은 [Releases · pocketbase/pocketbase](https://github.com/pocketbase/pocketbase/releases) 여기에서 확인 가능합니다.
+현재 0.23.8 버전이 최신버전입니다.
+
+```dockerfile
+FROM alpine:latest
+
+ARG PB_VERSION=0.23.8
+
+RUN apk add --no-cache \
+    unzip \
+    ca-certificates
+
+ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
+RUN unzip /tmp/pb.zip -d /pb/
+
+EXPOSE 8080
+
+CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
+```
+
+## fly.toml 파일 생성
+
+아래 명령어로 보일러플레이트 fly.toml 파일을 생성합니다.
+
+```shell {1}
+fly launch --no-deploy
+Scanning source code
+Detected a Dockerfile app
+Creating app in /Users/roy/Projects/fly-io-and-pocketbase
+We're about to launch your app on Fly.io. Here's what you're getting:
+
+Organization: Rowoon Lee             (fly launch defaults to the personal org)
+Name:         fly-io-and-pocketbase  (derived from your directory name)
+Region:       Tokyo, Japan           (this is the fastest region for you)
+App Machines: shared-cpu-1x, 1GB RAM (most apps need about 1GB of RAM)
+Postgres:     <none>                 (not requested)
+Redis:        <none>                 (not requested)
+Tigris:       <none>                 (not requested)
+
+? Do you want to tweak these settings before proceeding? Yes
+Opening https://fly.io/cli/launch/68616472327a32347a716c7a77676d667a7768337a7a67726c6a366f6936677a ...
+
+Waiting for launch data... Done
+Created app 'fly-io-and-pocketbase' in organization 'personal'
+Admin URL: https://fly.io/apps/fly-io-and-pocketbase
+Hostname: fly-io-and-pocketbase.fly.dev
+Wrote config file fly.toml
+Validating /Users/roy/Projects/fly-io-and-pocketbase/fly.toml
+✓ Configuration is valid
+Your app is ready! Deploy with `flyctl deploy`
+```
+
+`Do you want to tweak these settings before proceeding?` 질문에 **y**입력하면 앱 설정하는 화면이 나옵니다.
+설정하고 확인 누르면 fly.toml 파일이 생성됩니다.
+
+저는 리전을 nrt 도쿄를 선택했습니다. 현재 한국 리전은 제공되지 않습니다.
+![앱 설정](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-project-setting.png)
+
+## 영구 저장소용 볼륨 생성
+
+1GB 크기의 단일 볼륨을 만들겠습니다. 앱과 같은 리전을 선택해야 합니다.
+
+```shell
+fly volumes create pb_data --size=1
+```
+
+fly.toml 에 다음 내용을 추가합니다.
+
+```toml
+[mounts]
+  destination = "/pb/pb_data"
+  source = "pb_data"
+```
+
+## 배포하기
+
+배포 전 fly.toml 파일을 확인합니다.
+자세한 내용은 [App Config Reference (fly.toml)](https://fly.io/docs/reference/configuration/)을 참고하세요.
+
+```toml
+app = 'fly-io-and-pocketbase'
+primary_region = 'nrt'
+
+[mounts]
+  destination = "/pb/pb_data" # 컨테이너 내부의 마운트 경로
+  source = "pb_data"          # 볼륨 이름
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop' # 트래픽 없을 때 중지
+  auto_start_machines = true  # 요청 들어오면 시작
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'
+```
+
+다음 명령어를 실행하면 배포가 시작됩니다.
+
+```shell
+fly deploy
+```
+
+## PocketBase 접속하기
+
+호스트네임에 뒤에 `_` 를 붙여서 접속합니다.
+[https://fly-io-and-pocketbase.fly.dev/\_](https://fly-io-and-pocketbase.fly.dev/_)
+
+관리자 계정을 만들고 로그인하면 어드민 대시보드에 접속됩니다.
+
+![](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-dashboard.png)
+
+## 마무리
+
+Fly.io와 PocketBase를 활용해 간단한 방명록 기능을 손쉽게 구현할 수 있었습니다. 앞으로 MVP나 간단한 프로젝트를 진행할 때도 PocketBase를 유용한 옵션으로 고려할 것 같습니다.
+
+## 참고 문서
+
+- [Run PocketBase on fly.io](https://flaviocopes.com/run-pocketbase-on-flyio/)
