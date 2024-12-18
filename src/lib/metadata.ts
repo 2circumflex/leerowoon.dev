@@ -73,4 +73,9 @@ export const siteMetadata: Metadata = {
       "max-snippet": 160,
     },
   },
+  verification: {
+    other: {
+      "naver-site-verification": "cf9b026e74cd38c4ebd27132add48a41d088f505",
+    },
+  },
 };
