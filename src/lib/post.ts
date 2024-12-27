@@ -56,3 +56,9 @@ export const getPost = async (slug: string): Promise<Post> => {
   const post = await parsePost(postPath);
   return post;
 };
+
+export const getAllTags = async (): Promise<string[]> => {
+  const postList = await getPostList();
+  const tags = postList.flatMap((post) => post.tags);
+  return Array.from(new Set(tags));
+};
