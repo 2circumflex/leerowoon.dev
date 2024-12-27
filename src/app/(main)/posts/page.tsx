@@ -3,8 +3,6 @@ import { Metadata } from "next";
 import PostList from "@/components/posts/post-list";
 import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 
-export const dynamicParams = false;
-
 export async function generateMetadata(): Promise<Metadata> {
   const pageTitle = "Posts";
   const url = `${baseUrl}/posts`;
@@ -24,10 +22,6 @@ export async function generateMetadata(): Promise<Metadata> {
       title: pageTitle,
     },
   };
-}
-
-export async function generateStaticParams() {
-  return [{}];
 }
 
 export default async function PostsPage() {

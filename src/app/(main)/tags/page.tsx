@@ -3,8 +3,6 @@ import { Metadata } from "next";
 import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 import TagList from "@/components/tags/tag-list";
 
-export const dynamicParams = false;
-
 export async function generateMetadata(): Promise<Metadata> {
   const pageTitle = "Tags";
   const url = `${baseUrl}/tags`;
