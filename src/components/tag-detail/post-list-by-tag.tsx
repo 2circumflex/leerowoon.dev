@@ -5,16 +5,25 @@ import { getDescSortedPostList } from "@/lib/post";
 import { Post } from "@/lib/types";
 import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
-export default async function PostList() {
+interface PostListByTagProps {
+  tag: string;
+}
+
+export default async function PostListByTag({ tag }: PostListByTagProps) {
   const postlist = await getDescSortedPostList();
+
+  const filteredPostList = postlist.filter((post) => post.tags.includes(tag));
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-16">
-        {postlist.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
-      </div>
+      <h1 className="text-2xl font-bold mb-8"># {tag}</h1>
+      {filteredPostList.length > 0 && (
+        <div className="flex flex-col gap-16">
+          {filteredPostList.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

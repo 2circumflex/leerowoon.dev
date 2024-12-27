@@ -5,18 +5,9 @@ import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
-interface PostsPageProps {
-  searchParams: {
-    tag?: string;
-  };
-}
-
-export async function generateMetadata({
-  searchParams,
-}: PostsPageProps): Promise<Metadata> {
-  const tag = searchParams.tag;
-  const pageTitle = tag ? `#${tag}` : "Posts";
-  const url = tag ? `${baseUrl}/posts?tag=${tag}` : `${baseUrl}/posts`;
+export async function generateMetadata(): Promise<Metadata> {
+  const pageTitle = "Posts";
+  const url = `${baseUrl}/posts`;
 
   return {
     title: `${pageTitle} | ${siteName}`,
@@ -39,10 +30,10 @@ export async function generateStaticParams() {
   return [{}];
 }
 
-export default async function PostsPage({ searchParams }: PostsPageProps) {
+export default async function PostsPage() {
   return (
     <div className="container mx-auto max-w-[900px] mt-32 mb-16 flex flex-col p-2 px-6">
-      <PostList selectedTag={searchParams.tag} />
+      <PostList />
     </div>
   );
 }
