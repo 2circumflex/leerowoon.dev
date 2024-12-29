@@ -1,0 +1,136 @@
+---
+title: "Cloudflare Pages에 Next.js 배포 실패기 (feat. Edge Runtime)"
+desc: "Next.js 앱을 Cloudflare Pages에 배포하면서 겪은 Edge Runtime 호환성 문제와 실패한 경험을 공유합니다."
+date: 2024-12-29T09:00:00.000Z
+thumbnail: /posts/cloudflare-pages-nextjs-failed/thumbnail.png
+tags: ["cloudflare", "pages", "next.js"]
+---
+
+## 들어가기 전에
+
+Next.js에 익숙하지 않은 상태에서 개발 블로그를 만들다가, Cloudflare Pages에 배포하면서 겪은 경험을 공유하려고 합니다.
+
+<Callout type="info">Next.js 버전은 14.2.17 입니다.</Callout>
+
+## 왜 Cloudflare Pages를 선택했나?
+
+Next.js를 Vercel에만 배포해 본 경험이 있어서, Cloudflare Pages도 한번 사용해보고 싶었습니다.
+
+Cloudflare Pages는 무료 플랜도 제공하고 있습니다.
+https://www.cloudflare.com/ko-kr/plans/developer-platform/
+![Cloudflare Pages 무료 플랜](/posts/cloudflare-pages-nextjs-failed/cloudflare-pages-nextjs-failed-free-plan.png)
+
+정적 페이지 배포만 지원하는 플랫폼으로 알았지만, Full Stack(SSR)도 지원한다는 내용을 보고 사용해봐도 괜찮겠다는 생각을 했습니다.
+https://developers.cloudflare.com/pages/framework-guides/nextjs/ssr/
+
+## 배포시 겪은 문제
+
+[Learn how to deploy full-stack (SSR) Next.js apps to Cloudflare Pages.](https://developers.cloudflare.com/pages/framework-guides/nextjs/ssr/get-started/)
+문서를 참고하거나 구글에서 검색하면 배포 방법을 찾을 수 있습니다. 하지만 아래와 같은 문제들을 겪었습니다.
+
+### 1. Node.JS Compatibility Error
+
+앱을 배포하고 웹사이트를 열었을 때 아래와 같은 에러가 발생했습니다.
+
+![Node.JS Compatibility Error](/posts/cloudflare-pages-nextjs-failed/cloudflare-pages-nextjs-failed-nodejs-compatibility-error.png)
+
+이 문제는 **앱 > 설정 > 런타임 > 호환성 플래그**에서 `nodejs_compat` 플래그를 추가하면 해결됩니다.
+![호환성 플래그](/posts/cloudflare-pages-nextjs-failed/cloudflare-pages-nextjs-failed-runtime-flag.png)
+![nodejs_compat](/posts/cloudflare-pages-nextjs-failed/cloudflare-pages-nextjs-failed-nodejs-compat.png)
+
+### 2. export const runtime = 'edge';
+
+**/posts** 페이지에서 **searchParams**를 사용해 동적 렌더링이 되는 상황이 있었습니다.
+빌드 시 아래와 같은 에러가 발생했습니다.
+
+```js {6,19,31,34}
+23:28:16.516	▲  Route (app)                              Size     First Load JS
+23:28:16.516	▲  ┌ ○ /                                    141 B          87.3 kB
+23:28:16.516	▲  ├ ○ /_not-found                          141 B          87.3 kB
+23:28:16.516	▲  ├ ○ /about                               187 B          99.2 kB
+23:28:16.516	▲  ├ ○ /manifest.webmanifest                0 B                0 B
+23:28:16.516	▲  ├ ƒ /posts                               189 B          99.2 kB
+23:28:16.517	▲  ├ ● /posts/[slug]                        2.8 kB          102 kB
+23:28:16.517	▲  ├   ├ /posts/test3
+23:28:16.517	▲  ├   ├ /posts/test2
+23:28:16.517	▲  ├   └ /posts/test1
+23:28:16.517	▲  ├ ○ /robots.txt                          0 B                0 B
+23:28:16.517	▲  └ ○ /sitemap.xml                         0 B                0 B
+23:28:16.517	▲  + First Load JS shared by all            87.2 kB
+23:28:16.517	▲  ├ chunks/117-2982c3b28443478d.js       31.6 kB
+23:28:16.518	▲  ├ chunks/fd9d1056-920825da50076ee8.js  53.7 kB
+23:28:16.518	▲  └ other shared chunks (total)          1.94 kB
+23:28:16.518	▲  ○  (Static)   prerendered as static content
+23:28:16.518	▲  ●  (SSG)      prerendered as static HTML (uses getStaticProps)
+23:28:16.518	▲  ƒ  (Dynamic)  server-rendered on demand
+23:28:16.831	▲  Traced Next.js server files in: 248.293ms
+23:28:17.506	▲  Created all serverless functions in: 674.293ms
+23:28:17.517	▲  Collected static files (public/, static/, .next/static): 6.565ms
+23:28:17.570	▲  Build Completed in .vercel/output [32s]
+23:28:17.703	⚡️ Completed `npx vercel build`.
+23:28:17.754	⚡️ Invalid prerender config for /posts/[slug]
+23:28:17.755	⚡️ Invalid prerender config for /posts/[slug].rsc
+23:28:18.813
+23:28:18.813	⚡️ ERROR: Failed to produce a Cloudflare Pages build from the project.
+23:28:18.813	⚡️
+23:28:18.814	⚡️ 	The following routes were not configured to run with the Edge Runtime:
+23:28:18.814	⚡️ 	  - /posts
+23:28:18.814	⚡️
+23:28:18.814	⚡️ 	Please make sure that all your non-static routes export the following edge runtime route segment config:
+23:28:18.814	⚡️ 	  export const runtime = 'edge';
+23:28:18.814	⚡️
+23:28:18.814	⚡️ 	You can read more about the Edge Runtime on the Next.js documentation:
+23:28:18.814	⚡️ 	  https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
+23:28:18.814
+```
+
+이에 따라 /posts 페이지에 `export const runtime = 'edge';`를 추가한 뒤 다시 빌드했습니다.
+하지만 이번에는 다른 에러가 발생했습니다.
+
+```js {1,2,12,13,17,18}
+23:30:24.523	▲  ./node_modules/detect-libc/lib/detect-libc.js:6:1
+23:30:24.523	▲  Module not found: Can't resolve 'child_process'
+23:30:24.523	▲
+23:30:24.523	▲  https://nextjs.org/docs/messages/module-not-found
+23:30:24.524	▲
+23:30:24.524	▲  Import trace for requested module:
+23:30:24.524	▲  ./node_modules/sharp/lib/utility.js
+23:30:24.524	▲  ./node_modules/sharp/lib/index.js
+23:30:24.524	▲  ./node_modules/plaiceholder/dist/plaiceholder.esm.js
+23:30:24.524	▲  ./src/lib/getBase64.ts
+
+23:30:24.527	▲  ./src/lib/post.ts:1:1
+23:30:24.527	▲  Module not found: Can't resolve 'fs'
+23:30:24.527	▲  > 1 | import fs from "fs";
+23:30:24.528	▲      | ^
+
+23:30:24.529	▲  ./src/lib/post.ts:3:1
+23:30:24.529	▲  Module not found: Can't resolve 'path'
+23:30:24.529	▲    1 | import fs from "fs";
+23:30:24.529	▲    2 | import matter from "gray-matter";
+23:30:24.530	▲  > 3 | import path from "path";
+23:30:24.530	▲      | ^
+```
+
+post.ts, getBase64.ts 파일에서 **fs**와 **path**를 사용하는 것이 문제였습니다.
+이 모듈들은 **Node.js Runtime**에서만 사용할 수 있으며, Cloudflare Pages는 **Edge Runtime**을 사용하기 때문에 지원되지 않습니다.
+
+- https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
+- https://nextjs.org/docs/pages/api-reference/edge
+
+Edge Runtime은 제한된 API만 제공하며, fs와 path는 사용할 수 없습니다.
+따라서 Edge Runtime에 적합한 API를 사용해야 합니다.
+
+문제는 제가 작성한 파일 외에도, 이미지 플레이스홀더(blur 효과)를 생성하는 데 사용하는 [sharp](https://github.com/lovell/sharp) 라이브러리가 [detect-libc](https://github.com/lovell/detect-libc)를 통해 Node.js의 child_process를 사용하고 있었습니다.
+이 부분은 제가 수정할 수 없기 때문에 결국 Vercel에 배포했습니다.
+
+## 마무리
+
+Cloudflare Pages를 제대로 알아보지 않고 배포하려다 삽질을 했지만, 그 과정에서 많은 것을 배울 수 있었습니다.
+
+정적 페이지 배포에는 문제가 없으니 Cloudflare Pages를 사용하는 것도 괜찮습니다.
+또는 Edge Runtime에서 제공하는 API만 사용하는 단순한 기능의 웹페이지에 적합할 것 같습니다.
+
+## 참고 문서
+
+- https://www.thetombomb.com/posts/nextjs-pages-cloudflare-pages
