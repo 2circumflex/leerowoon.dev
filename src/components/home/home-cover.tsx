@@ -1,9 +1,9 @@
-import Image from "next/image";
+import { FixedSizeImgWithPlaceholder } from "@/components/fixed-size-img-with-placeholder";
 
 export default function HomeCover() {
   return (
     <div className="relative w-full h-[300px] mb-16">
-      <Image
+      <FixedSizeImgWithPlaceholder
         src="/images/home_cover.jpg"
         alt="프라하의 아름다운 도시 전경"
         width={1252}
