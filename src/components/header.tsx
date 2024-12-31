@@ -26,18 +26,11 @@ const Header = () => {
         <div className="mx-auto max-w-[1000px] bg-background rounded-2xl border overflow-hidden shadow-sm dark:shadow-gray-700/50">
           <div className="flex h-14 items-center justify-between px-3">
             <Link
-              href="/posts"
+              href="/"
               className="ml-2 flex items-center text-lg font-bold text-gray-700 dark:text-gray-300"
               aria-label="홈으로 이동"
             >
-              <span className="relative inline-block overflow-hidden group">
-                <p className="inline-block transition-transform duration-300 group-hover:-translate-y-full">
-                  <span className="text-primary">leerowoon</span>.dev
-                </p>
-                <p className="absolute left-0 inline-block translate-y-full transition-transform duration-300 group-hover:translate-y-0">
-                  <span className="text-primary">이로운</span>개발
-                </p>
-              </span>
+              <span className="text-primary">leerowoon</span>.dev
             </Link>
             <nav>
               <ul className="flex items-center gap-1">
