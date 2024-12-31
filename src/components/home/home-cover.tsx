@@ -11,7 +11,7 @@ export default function HomeCover() {
         className="rounded-lg object-cover w-full h-[300px] animate-home-cover mb-16"
       />
       <div className="absolute z-10 inset-0 bg-black/30 rounded-lg" />
-      <h1 className="absolute z-20 bottom-5 left-5 text-3xl text-white">
+      <h1 className="absolute z-20 bottom-5 left-5 text-2xl text-white">
         이로운 개발 👨‍💻
       </h1>
     </div>
