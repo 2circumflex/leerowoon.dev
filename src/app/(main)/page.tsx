@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
+import HomeCover from "@/components/home/home-cover";
 
 export async function generateMetadata(): Promise<Metadata> {
   const url = `${baseUrl}`;
@@ -25,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   return (
     <div className="container mx-auto max-w-[900px] mt-32 mb-16 flex flex-col p-2 px-6">
-      {/* 홈 커버 */}
+      <HomeCover />
       {/* 최근 포스트 */}
     </div>
   );

@@ -106,3 +106,16 @@
     text-wrap: balance;
   }
 }
+
+@keyframes home-cover {
+  0% {
+    object-position: center bottom;
+  }
+  100% {
+    object-position: center top;
+  }
+}
+
+.animate-home-cover {
+  animation: home-cover 15s ease-out alternate infinite;
+}
