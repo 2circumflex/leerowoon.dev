@@ -28,11 +28,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <GoogleAnalytics gaId={GA_ID} />
+          <Analytics />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId={GA_ID} />
-      <Analytics />
-      <SpeedInsights />
     </html>
   );
 }
