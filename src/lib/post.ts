@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import path from "path";
 import { sync } from "glob";
 
-import { Post, PostMatter, PostMatterWithContent } from "./types";
+import { HeadingItem, Post, PostMatter, PostMatterWithContent } from "./types";
 
 const BASE_PATH = "/src/posts";
 const POSTS_PATH = path.join(process.cwd(), BASE_PATH);
@@ -61,4 +61,24 @@ export const getAllTags = async (): Promise<string[]> => {
   const postList = await getPostList();
   const tags = postList.flatMap((post) => post.tags);
   return Array.from(new Set(tags));
+};
+
+export const parseToc = (content: string): HeadingItem[] => {
+  const regex = /^(##|###) (.*$)/gim;
+  const headingList = content.match(regex);
+  return (
+    headingList?.map((heading: string) => ({
+      text: heading.replace("##", "").replace("#", ""),
+      link:
+        "#" +
+        heading
+          .replace("# ", "")
+          .replace("#", "")
+          .replace(/[\[\]:!@#$/%^&*()+=,.';]/g, "")
+          .replace(/ /g, "-")
+          .toLowerCase()
+          .replace("?", ""),
+      indent: (heading.match(/#/g)?.length || 2) - 2,
+    })) || []
+  );
 };

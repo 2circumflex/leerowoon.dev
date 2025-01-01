@@ -13,3 +13,9 @@ export interface PostMatterWithContent extends PostMatter {
 export interface Post extends PostMatterWithContent {
   slug: string;
 }
+
+export interface HeadingItem {
+  text: string;
+  link: string;
+  indent: number;
+}

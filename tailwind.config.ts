@@ -62,7 +62,7 @@ const config: Config = {
         DEFAULT: {
           css: {
             "h2, h3, h4": {
-              scrollMarginTop: "5rem",
+              scrollMarginTop: "6rem",
             },
             p: {
               marginTop: "0.5rem",

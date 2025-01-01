@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 
+import { getPost, getPostPaths, parsePostFileName, parseToc } from "@/lib/post";
+import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 import PostHeader from "@/components/post-detail/post-header";
 import PostBody from "@/components/post-detail/post-body";
-import { getPost, getPostPaths, parsePostFileName } from "@/lib/post";
-import { baseUrl, siteMetadata, siteName } from "@/lib/metadata";
 import Giscus from "@/components/post-detail/giscus";
+import TOCSidebar from "@/components/post-detail/toc-sidebar";
 
 export async function generateMetadata({
   params: { slug },
@@ -53,11 +54,15 @@ export default async function PostDetailPage({
   params: { slug },
 }: PostDetailPageProps) {
   const post = await getPost(slug);
+  const toc = parseToc(post.content);
 
   return (
     <div className="prose dark:prose-invert container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col p-2 px-6">
       <PostHeader post={post} />
-      <PostBody post={post} />
+      <div className="relative">
+        <PostBody post={post} />
+        <TOCSidebar toc={toc} />
+      </div>
       <hr />
       <Giscus />
     </div>
