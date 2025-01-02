@@ -17,7 +17,7 @@ export default async function RecentPost() {
   );
 }
 
-const RecentPostListCount = 3;
+const RecentPostListCount = 4;
 
 async function RecentPostList() {
   const postlist = await getDescSortedPostList();
