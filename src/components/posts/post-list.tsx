@@ -1,5 +1,6 @@
 import { getDescSortedPostList } from "@/lib/post";
 import PostCard from "@/components/common/post-card";
+
 export default async function PostList() {
   const postlist = await getDescSortedPostList();
 
