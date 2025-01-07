@@ -1,18 +1,16 @@
 import type { MetadataRoute } from "next";
 
-import { getPostPaths, parsePostFileName } from "@/lib/post";
+import { getDescSortedPostList } from "@/lib/post";
 import { baseUrl } from "@/lib/metadata";
 
 const getSitemapForPostList = async () => {
-  const sitemapPostList = getPostPaths()
-    .map((path) => parsePostFileName(path))
-    .map((slug: string) => ({
-      lastModified: new Date(),
-      url: `${baseUrl}/posts/${slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    }));
-  return sitemapPostList;
+  const postList = await getDescSortedPostList();
+  return postList.map((post) => ({
+    lastModified: post.modifiedAt,
+    url: `${baseUrl}/posts/${post.slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -36,13 +34,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/tags`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/posts`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.8,
     },
     ...sitemapForPostList,
   ];

@@ -26,7 +26,7 @@ export async function generateMetadata({
       title: pageTitle,
       description,
       type: "article",
-      publishedTime: post.date.toISOString(),
+      publishedTime: post.createdAt.toISOString(),
       url: `${baseUrl}/posts/${post.slug}`,
       images: [imageURL],
     },

@@ -1,9 +1,10 @@
 export interface PostMatter {
   title: string;
   desc: string;
-  date: Date;
   thumbnail: string;
   tags: string[];
+  createdAt: Date;
+  modifiedAt: Date;
 }
 
 export interface PostMatterWithContent extends PostMatter {

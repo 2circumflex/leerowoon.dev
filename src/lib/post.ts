@@ -48,7 +48,7 @@ export const getPostList = async (): Promise<Post[]> => {
 
 export const getDescSortedPostList = async (): Promise<Post[]> => {
   const postList = await getPostList();
-  return postList.sort((a, b) => (a.date > b.date ? -1 : 1));
+  return postList.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
 };
 
 export const getPost = async (slug: string): Promise<Post> => {

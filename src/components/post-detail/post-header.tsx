@@ -19,7 +19,7 @@ export default function PostHeader({ post }: { post: Post }) {
       <div className="flex flex-row items-center gap-2 text-muted-foreground/70">
         <FiCalendar className="size-4" />
         <p className="text-sm">
-          {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
+          {dayjs(post.createdAt).locale("ko").format("YYYY년 MM월 DD일")}
         </p>
       </div>
       <div className="mt-4 mb-0 flex flex-wrap gap-2">

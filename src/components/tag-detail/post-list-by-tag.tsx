@@ -40,7 +40,7 @@ const PostCard = ({ post }: { post: Post }) => {
             {post.desc}
           </p>
           <time className="mt-4 text-xs text-muted-foreground/70">
-            {dayjs(post.date).locale("ko").format("YYYY년 MM월 DD일")}
+            {dayjs(post.createdAt).locale("ko").format("YYYY년 MM월 DD일")}
           </time>
         </div>
         <div className="hidden sm:block sm:w-[160px] md:w-[200px] shrink-0">
