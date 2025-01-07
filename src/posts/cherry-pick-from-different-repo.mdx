@@ -1,0 +1,137 @@
+---
+title: "다른 repository의 commit을 cherry-pick 하는 방법"
+desc: "다른 Git 저장소(repository)의 커밋을 현재 프로젝트로 가져오는 cherry-pick 방법과 충돌 해결 방법을 설명합니다."
+date: 2025-01-07T13:17:23.170Z
+thumbnail: /posts/cherry-pick-from-different-repo/thumbnail.png
+tags: ["git"]
+---
+
+## 들어가기 전에
+
+`git cherry-pick` 명령어는 보통 같은 저장소의 커밋을 가져올 때 사용하지만, 다른 저장소의 커밋도 가져올 수 있습니다.
+프로젝트 초기 세팅시 다른 프로젝트에서 세팅한 내용을 그대로 가져와야 하거나 특정 커밋을 가져와야 하는 경우가 있습니다. 리모트를 추가해서 체리픽 하는 방법을 설명합니다.
+
+## repository 설명
+
+- **app-a** : 가져올 다른 레포지토리
+  - 레포지토리 주소 : `https://github.com/2circumflex/app-a.git`
+- **app-b** : 현재 레포지토리
+  - 레포지토리 주소 : `https://github.com/2circumflex/app-b.git`
+
+## 1. remote 추가
+
+app-b의 remote 목록입니다.
+
+```shell {1}
+git remote -v
+origin	git@github.com:2circumflex/app-b.git (fetch)
+origin	git@github.com:2circumflex/app-b.git (push)
+```
+
+여기에 app-a를 remote로 추가합니다.
+
+- 명령어 : `git remote add <remote-name> <repository-url>`
+  (remote-name은 임의로 지정할 수 있습니다.)
+
+```shell
+git remote add app-a git@github.com:2circumflex/app-a.git
+```
+
+<Callout type="info">
+  2circumflex은 제 깃허브 아이디입니다. 자신의 아이디로 변경해주세요.
+</Callout>
+
+다시 app-b의 remote 목록을 확인해봅니다.
+app-a가 추가된 것을 확인할 수 있습니다.
+
+```shell {2,3}
+git remote -v
+app-a	git@github.com:2circumflex/app-a.git (fetch)
+app-a	git@github.com:2circumflex/app-a.git (push)
+origin	git@github.com:2circumflex/app-b.git (fetch)
+origin	git@github.com:2circumflex/app-b.git (push)
+```
+
+## 2. fetch
+
+app-a의 commit 정보를 가져오기 위해서는 app-a의 remote를 fetch해야 합니다.
+
+- 명령어 : `git fetch <remote-name>`
+
+```shell {1}
+git fetch app-a
+
+remote: Enumerating objects: 34, done.
+remote: Counting objects: 100% (34/34), done.
+remote: Compressing objects: 100% (25/25), done.
+remote: Total 34 (delta 12), reused 31 (delta 9), pack-reused 0 (from 0)
+Unpacking objects: 100% (34/34), 147.22 KiB | 375.00 KiB/s, done.
+From github.com:2circumflex/app-a
+ * [new branch]      main       -> app-a/main
+```
+
+## 3. commit 로그 확인
+
+app-a의 commit 목록을 확인합니다.
+
+- 명령어 : `git log <remote-name>/<branch-name>`
+
+```shell {1}
+git log app-a/main
+
+973dcb0 13:26:15   Roy   커밋 e
+8970071 13:21:53   Roy   커밋 d
+1d293ba 13:13:06   Roy   커밋 c
+4ff5bf0 13:04:44   Roy   커밋 b
+3a84645 12:58:04   Roy   커밋 a
+```
+
+## 4. cherry-pick
+
+가져올 커밋을 아래 명령어로 가져옵니다.
+
+- 명령어 : `git cherry-pick <commit-hash>`
+
+```shell
+git cherry-pick 3a84645
+```
+
+## 여러개의 커밋을 한번에 cherry-pick 하는 방법
+
+### 여러개의 커밋을 가져오기
+
+- 명령어 : `git cherry-pick <commit-hash> <commit-hash> <commit-hash>`
+
+```shell
+git cherry-pick 3a84645 4ff5bf0 1d293ba
+```
+
+### 커밋을 범위로 가져오기 1
+
+이 명령어는 `<start-hash>`를 제외하고 `<end-hash>`까지 가져옵니다.
+
+- 명령어 : `git cherry-pick <start-hash>..<end-hash>`
+
+```shell
+git cherry-pick 4ff5bf0..973dcb0
+```
+
+커밋 c(1d293ba)부터 커밋 e(973dcb0)까지 가져옵니다.
+
+### 커밋을 범위로 가져오기 2
+
+`<start-hash>`를 포함해서 `<end-hash>`까지 가져옵니다.
+
+- 명령어 : `git cherry-pick <start-hash>^..<end-hash>`
+
+```shell
+git cherry-pick 4ff5bf0^..973dcb0
+```
+
+커밋 b(4ff5bf0)부터 커밋 e(973dcb0)까지 가져옵니다.
+
+<Callout type="danger">start-hash가 최초 커밋이면 에러가 발생합니다.</Callout>
+
+## 참고 문서
+
+https://git-scm.com/docs/git-cherry-pick
