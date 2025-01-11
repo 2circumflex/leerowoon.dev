@@ -15,9 +15,9 @@ modifiedAt: 2025-01-07T13:17:23.170Z
 ## repository 설명
 
 - **app-a** : 가져올 다른 레포지토리
-  - 레포지토리 주소 : `https://github.com/2circumflex/app-a.git`
+  - 레포지토리 주소 : https://github.com/2circumflex/app-a.git
 - **app-b** : 현재 레포지토리
-  - 레포지토리 주소 : `https://github.com/2circumflex/app-b.git`
+  - 레포지토리 주소 : https://github.com/2circumflex/app-b.git
 
 ## 1. remote 추가
 
@@ -31,15 +31,15 @@ origin	git@github.com:2circumflex/app-b.git (push)
 
 여기에 app-a를 remote로 추가합니다.
 
-- 명령어 : `git remote add <remote-name> <repository-url>`
-  (remote-name은 임의로 지정할 수 있습니다.)
+`git remote add <remote-name> <repository-url>`
+(**remote-name**은 임의로 지정할 수 있습니다.
 
 ```shell
 git remote add app-a git@github.com:2circumflex/app-a.git
 ```
 
 <Callout type="info">
-  2circumflex은 제 깃허브 아이디입니다. 자신의 아이디로 변경해주세요.
+  2circumflex은 제 깃허브 아이디입니다. 본인 아이디로 변경해주세요.
 </Callout>
 
 다시 app-b의 remote 목록을 확인해봅니다.
@@ -57,7 +57,7 @@ origin	git@github.com:2circumflex/app-b.git (push)
 
 app-a의 commit 정보를 가져오기 위해서는 app-a의 remote를 fetch해야 합니다.
 
-- 명령어 : `git fetch <remote-name>`
+`git fetch <remote-name>`
 
 ```shell {1}
 git fetch app-a
@@ -75,7 +75,7 @@ From github.com:2circumflex/app-a
 
 app-a의 commit 목록을 확인합니다.
 
-- 명령어 : `git log <remote-name>/<branch-name>`
+`git log <remote-name>/<branch-name>`
 
 ```shell {1}
 git log app-a/main
@@ -91,7 +91,7 @@ git log app-a/main
 
 가져올 커밋을 아래 명령어로 가져옵니다.
 
-- 명령어 : `git cherry-pick <commit-hash>`
+`git cherry-pick <commit-hash>`
 
 ```shell
 git cherry-pick 3a84645
@@ -101,7 +101,7 @@ git cherry-pick 3a84645
 
 ### 여러개의 커밋을 가져오기
 
-- 명령어 : `git cherry-pick <commit-hash> <commit-hash> <commit-hash>`
+`git cherry-pick <commit-hash> <commit-hash> <commit-hash>`
 
 ```shell
 git cherry-pick 3a84645 4ff5bf0 1d293ba
@@ -109,29 +109,39 @@ git cherry-pick 3a84645 4ff5bf0 1d293ba
 
 ### 커밋을 범위로 가져오기 1
 
-이 명령어는 `<start-hash>`를 제외하고 `<end-hash>`까지 가져옵니다.
+`git cherry-pick <start-hash>..<end-hash>`
 
-- 명령어 : `git cherry-pick <start-hash>..<end-hash>`
+이 명령어는 **start-hash**를 <u>제외</u>하고 **end-hash**까지 가져옵니다.
 
-```shell
+```shell {1}
 git cherry-pick 4ff5bf0..973dcb0
+
+// 4ff5bf0 : 커밋 b
+// 973dcb0 : 커밋 e
 ```
 
-커밋 c(1d293ba)부터 커밋 e(973dcb0)까지 가져옵니다.
+**커밋 c** 부터 **커밋 e** 까지 가져옵니다.
 
 ### 커밋을 범위로 가져오기 2
 
-`<start-hash>`를 포함해서 `<end-hash>`까지 가져옵니다.
+`git cherry-pick <start-hash>^..<end-hash>`
 
-- 명령어 : `git cherry-pick <start-hash>^..<end-hash>`
+**start-hash**를 <u>포함</u>해서 **end-hash**까지 가져옵니다.
 
-```shell
+`^` 기호는 부모 커밋을 참조합니다.
+
+```shell {1}
 git cherry-pick 4ff5bf0^..973dcb0
+
+// 4ff5bf0 : 커밋 b
+// 973dcb0 : 커밋 e
 ```
 
-커밋 b(4ff5bf0)부터 커밋 e(973dcb0)까지 가져옵니다.
+**커밋 b** 부터 **커밋 e** 까지 가져옵니다.
 
-<Callout type="danger">start-hash가 최초 커밋이면 에러가 발생합니다.</Callout>
+<Callout type="danger">
+  start-hash가 최초 커밋이면 참조할 부모 커밋이 없어 에러가 발생합니다.
+</Callout>
 
 ## 참고 문서
 
