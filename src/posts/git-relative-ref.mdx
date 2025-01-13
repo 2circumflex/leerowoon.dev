@@ -1,0 +1,85 @@
+---
+title: "Git의 상대 참조"
+desc: "Git에서 상대 참조(Relative Reference)란 무엇인지, ^와 ~를 사용하여 커밋을 탐색하는 방법을 설명합니다."
+thumbnail: /posts/git-relative-ref/thumbnail.png
+tags: ["git"]
+createdAt: 2025-01-13T07:56:00.000Z
+modifiedAt: 2025-01-13T07:56:00.000Z
+---
+
+## 상대 참조란?
+
+Git에서 상대 참조는 특정 기준점(HEAD, 브랜치, 태그, 커밋 해시 등)을 기준으로 부모나 조상 커밋을 탐색하는 방법입니다.
+이 기능은 커밋 히스토리를 유연하게 탐색하고, 특정 시점의 상태를 참조하는데 유용합니다.
+
+예를 들어 로그를 보고 커밋 해시값을 외우고 접근하는 과정은 귀찮습니다. 이런 경우 상대 참조를 통해 커밋을 탐색할 수 있습니다.
+
+`^`(caret), `~`(tilde)에 대해서 설명합니다.
+
+## ^ (caret)
+
+부모 커밋을 참조합니다.
+
+```shell
+git checkout HEAD^
+```
+
+`HEAD^`는 HEAD의 부모 커밋을 참조합니다.
+
+<Callout type="info">HEAD는 현재 커밋을 가리키는 포인터입니다.</Callout>
+
+### 여러 단계 위의 부모 커밋을 참조하기
+
+`^`를 여러 개 붙이는 것도 가능합니다.
+붙이는 개수만큼 위의 부모 커밋을 참조합니다.
+
+```shell
+git checkout HEAD^^   // 2단계 위로 이동
+git checkout HEAD^^^  // 3단계 위로 이동
+```
+
+## ~ (tilde)
+
+`~n`은 n번째 부모 커밋을 참조합니다.
+
+```shell
+git checkout HEAD~2
+```
+
+`HEAD~2`는 HEAD의 2번째 부모 커밋을 참조합니다.
+
+```shell
+// 아래 명령어는 같은 결과를 나타냅니다.
+git checkout HEAD^^
+git checkout HEAD~2
+```
+
+## ^와 ~ 혼합 사용
+
+`^`와 `~`을 함께 사용할 수 있습니다.
+
+```shell
+git checkout HEAD~2^
+```
+
+`HEAD~2^`는 HEAD의 두 번째 조상(HEAD~2)으로 이동한 뒤, 그 커밋의 부모를 참조합니다.
+
+## 다른 예시
+
+다른 기준점(예: HEAD, 브랜치 이름, 태그, 커밋 해시)에도 사용 가능합니다.
+
+```shell
+git checkout main^     // main 브랜치의 부모 커밋을 참조합니다.
+git checkout main~2    // main 브랜치의 2번째 부모 커밋을 참조합니다.
+
+git checkout v1.0.0^   // v1.0.0 태그의 부모 커밋을 참조합니다.
+git checkout v1.0.0~2  // v1.0.0 태그의 2번째 부모 커밋을 참조합니다.
+
+git checkout 8c7756a^  // 8c7756a 커밋 해시의 부모 커밋을 참조합니다.
+git checkout 8c7756a~2 // 8c7756a 커밋 해시의 2번째 부모 커밋을 참조합니다.
+```
+
+<Callout type="info">
+  예제에서는 `git checkout`만 사용했지만, `git show`, `git log`, `git diff` 등
+  다양한 명령어에서도 상대 참조를 사용할 수 있습니다.
+</Callout>
