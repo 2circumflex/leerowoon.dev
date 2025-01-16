@@ -1,10 +1,10 @@
 ---
 title: "Fly.io에 PocketBase 배포하기"
 desc: "무료로 운영 가능한 Fly.io와 오픈소스 백엔드 PocketBase를 활용하여 서버를 구축하고 배포하는 방법을 설명합니다."
-thumbnail: /posts/deploy-pocketbase-on-fly-io/thumbnail.png
+thumbnail: /posts/deploy-pocketbase-to-fly-io/thumbnail.png
 tags: ["fly.io", "pocketbase"]
 createdAt: 2024-12-18T09:00:00.000Z
-modifiedAt: 2024-12-18T09:00:00.000Z
+modifiedAt: 2025-01-16T09:00:00.000Z
 ---
 
 ## 들어가기 전에
@@ -35,10 +35,10 @@ modifiedAt: 2024-12-18T09:00:00.000Z
 - [Fly.io Resource Pricing](https://fly.io/docs/about/pricing/#discontinued-plans)
 
 하지만 $5 미만은 청구되지 않습니다.
-![$5 미만은 청구되지 않는다는 메일 내용](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-billing.png)
+![$5 미만은 청구되지 않는다는 메일 내용](/posts/deploy-pocketbase-to-fly-io/deploy-pocketbase-to-fly-io-billing.png)
 
 저는 nrt 리전 `shared-cpu-1x@256MB` VM을 사용하고 있고, 트래픽이 거의 없어 무료로 사용 가능합니다.
-![nrt 리전 VM 가격](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-nrt-region.png)
+![nrt 리전 VM 가격](/posts/deploy-pocketbase-to-fly-io/deploy-pocketbase-to-fly-io-nrt-region.png)
 
 <Callout type="warn">
   요금에 대한 정확한 내용은 문서를 확인하시길 바랍니다.
@@ -122,7 +122,7 @@ Your app is ready! Deploy with `flyctl deploy`
 설정하고 확인 누르면 fly.toml 파일이 생성됩니다.
 
 저는 리전을 nrt 도쿄를 선택했습니다. 현재 한국 리전은 제공되지 않습니다.
-![앱 설정](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-project-setting.png)
+![앱 설정](/posts/deploy-pocketbase-to-fly-io/deploy-pocketbase-to-fly-io-project-setting.png)
 
 ## 영구 저장소용 볼륨 생성
 
@@ -179,7 +179,7 @@ fly deploy
 
 관리자 계정을 만들고 로그인하면 어드민 대시보드에 접속됩니다.
 
-![](/posts/deploy-pocketbase-on-fly-io/deploy-pocketbase-on-fly-io-dashboard.png)
+![](/posts/deploy-pocketbase-to-fly-io/deploy-pocketbase-to-fly-io-dashboard.png)
 
 ## 마무리
 
