@@ -1,0 +1,222 @@
+---
+title: "React Native앱의 jsbundle 역공학: Hermes 바이트코드에서 .env 키 추출하기"
+desc: "React Native 앱의 Hermes 바이트코드를 역공학하여 환경 변수에 저장된 API 키를 추출하는 과정을 단계별로 설명하고, 클라이언트 앱에 민감한 정보를 저장할 때의 보안 위험성을 경고합니다."
+thumbnail: /posts/react-native-hermes-reverse-env-key/thumbnail.png
+tags: ["react-native", "expo", "hermes", "jsbundle", "env"]
+createdAt: 2025-05-06T09:31:20.251Z
+modifiedAt: 2025-05-06T09:31:20.251Z
+---
+
+## 들어가기 전에
+
+앱 개발 시 `.env` 파일에 API Key나 비밀 키 같은 민감한 정보를 넣어 사용하는 경우가 있습니다.
+이러한 키는 빌드 과정에서 앱에 포함되기 때문에, 보안적으로 노출 위험이 존재합니다.
+
+이번 글에서는 React Native 앱에서 키가 어떻게 번들에 포함되는지, 그리고 Hermes 엔진을 사용하는 경우 jsbundle을 역공학하여 키를 추출하는 과정을 살펴보겠습니다.
+
+예제는 iOS를 기준으로 설명하겠습니다.
+
+## 테스트 환경
+
+- [Expo](https://docs.expo.dev/) (v52.0.46)
+- [React-Native](https://reactnative.dev/) (v0.76.9)
+
+## Hermes 엔진 간단한 소개
+
+[Hermes](https://github.com/facebook/hermes)는 React Native에서 사용하는 자바스크립트 엔진으로, 성능 최적화를 위해 자바스크립트를 미리 바이트코드로 변환해 앱에 포함하는 방식으로 동작합니다.
+기존에 React Native는 기본적으로 JSC(JavaScriptCore)를 사용했는데, JSC는 앱 실행 시 자바스크립트 원본 코드를 런타임에 해석하여 실행합니다.
+
+반면 Hermes는 빌드 시점에 자바스크립트 코드를 바이트코드(Bytecode)로 컴파일하여 .jsbundle 파일을 생성합니다. 이 방식은 앱 실행 속도 개선, 메모리 사용량 감소 등의 이점을 제공합니다.
+
+Expo SDK 46 (React Native 0.69)부터는 Hermes가 기본적으로 번들에 포함되어 있으며, Hermes 버전에 따라 바이트코드 포맷이 달라질 수 있습니다.
+
+## 예제
+
+아래와 같이 설정하고 테스트를 진행했습니다.
+
+<br />
+
+.env 파일
+
+```env
+EXPO_PUBLIC_TEST_API_KEY=test-8c1c-a42491d-599da677-e072e1aa72de
+```
+
+js 파일
+
+```javascript
+{
+  apiKey: process.env.EXPO_PUBLIC_TEST_API_KEY,
+}
+```
+
+## 1. 앱 압축 풀기
+
+iOS에서 앱은 .ipa 확장자를 가진 파일로 패키징됩니다. 이 파일은 앱의 실행 파일뿐만 아니라 Info.plist, 이미지, 폰트, JavaScript 번들 등 앱 구동에 필요한 모든 리소스를 포함한 압축 파일(zip 포맷 기반)입니다.
+
+아래 명령어로 압축을 해제 합니다. (또는 파인더에서 확장자를 zip으로 변경하고 압축을 풀 수 있습니다)
+
+```shell
+unzip ipa파일 -d 폴더명
+```
+
+압축을 풀면 3개의 폴더가 보입니다.
+
+```shell
+.
+├── ._Symbols
+├── Payload
+└── Symbols
+```
+
+**Payload**로 이동하면 `app` 파일이 보입니다.
+
+아래 명령어로 이동하거나, 파인더에서는 **패키지 내용 보기**로 이동합니다.
+
+```shell
+cd 앱이름.app
+```
+
+![패키지 내용 보기](/posts/react-native-hermes-reverse-env-key/react-native-hermes-reverse-env-key-show-package.png)
+
+## 2. 구조
+
+일부 파일은 제거했고, Expo로 빌드한 앱이라 순수 React Native로 빌드한 앱이랑 다를 수 있습니다. 참고만 하세요.
+
+```shell
+.
+├── AppIcon60x60@2x.png
+├── AppIcon76x76@2x~ipad.png
+├── Assets.car                          # 앱 리소스(이미지 등)를 바이너리로 압축한 파일
+├── EXConstants.bundle
+├── Expo.plist                          # Expo 관련 설정을 담고 있는 plist 파일
+├── ExpoApp                             # 앱 실행 바이너리 파일
+├── ExpoApplication_privacy.bundle
+├── ExpoConstants_privacy.bundle
+├── ExpoDevice_privacy.bundle
+├── ExpoFileSystem_privacy.bundle
+├── ExpoLocalization_privacy.bundle
+├── FBLPromises_Privacy.bundle
+├── Frameworks                          # 포함된 외부 프레임워크 바이너리들이 들어 있는 폴더
+├── GoogleDataTransport_Privacy.bundle
+├── GoogleUtilities_Privacy.bundle
+├── Info.plist                          # 앱의 메타데이터 (번들 ID, 권한 등)를 담은 핵심 설정 파일
+├── PkgInfo
+├── Pretendard-Bold.otf
+├── Pretendard-Medium.otf
+├── Pretendard-Regular.otf
+├── Pretendard-SemiBold.otf
+├── PrivacyInfo.xcprivacy               # 앱의 개인정보 처리방침 관련 메타데이터
+├── Promises_Privacy.bundle
+├── RCT-Folly_privacy.bundle
+├── React-Core_privacy.bundle
+├── React-cxxreact_privacy.bundle
+├── SDWebImage.bundle
+├── SplashScreen.storyboardc            # 스플래시 화면 UI 정의가 들어 있는 파일
+├── _CodeSignature                      # 코드 서명 정보가 담긴 폴더
+├── assets                              # 앱 번들에 포함된 정적 자산들이 위치
+├── boost_privacy.bundle
+├── embedded.mobileprovision            # 배포 프로비저닝 프로파일 정보
+├── glog_privacy.bundle
+├── ko.lproj                            # 한국어 로컬라이징 리소스가 포함된 폴더
+├── main.jsbundle                       # [Hermes 바이트코드 또는 JSC용 JS 번들]
+├── modules.json                        # Expo나 React Native의 모듈 구성 정보를 담고 있는 파일입니다.
+└── nanopb_Privacy.bundle/
+```
+
+## 3. main.jsbundle 파일 확인
+
+**main.jsbundle** 파일은 React Native 앱의 자바스크립트 코드가 번들링되어 저장된 결과물입니다.
+file 명령어로 확인해 보면, Hermes 바이트코드 형식으로 컴파일 되었으며 버전은 96인 걸 확인할 수 있습니다.
+
+```shell {1}
+file main.jsbundle
+
+main.jsbundle: Hermes JavaScript bytecode, version 96
+```
+
+## 4. main.jsbundle 파일내 TEST_API_KEY 확인하기
+
+두 가지 도구를 활용해서 **.env** 파일에 넣었던 `test-8c1c-a42491d-599da677-e072e1aa72de` 키를 확인해 보겠습니다.
+
+### 4-1. hbctool
+
+- https://github.com/Kirlif/HBC-Tool
+
+(2025.05.06 기준) 현재 [Hermes Bytecode version 96](https://github.com/Kirlif/HBC-Tool/tree/main/hbctool/hbc/hbc96) 까지 지원한다고 [Support](https://github.com/Kirlif/HBC-Tool?tab=readme-ov-file#support)에 적혀있습니다.
+
+```shell {1}
+hbctool disasm main.jsbundle ./disasm
+
+[*] Disassemble 'main.jsbundle' to './disasm' path
+[*] Hermes Bytecode [ Source Hash: 3f4e3868ece0130fe6b5648e73e749a05a979aaa, HBC Version: 96 ]
+[*] Done
+```
+
+disasm 폴더에 아래와 같은 파일이 생깁니다.
+
+```shell
+.
+├── instruction.hasm
+├── metadata.json
+└── string.json
+```
+
+**string.json** 파일
+![string.json](/posts/react-native-hermes-reverse-env-key/react-native-hermes-reverse-env-key-string-json.png)
+
+**instruction.hasm** 파일
+![instruction.hasm](/posts/react-native-hermes-reverse-env-key/react-native-hermes-reverse-env-key-instruction-hasm.png)
+
+### 4-2. hermes-dec
+
+- https://github.com/P1sec/hermes-dec
+
+예전 버전만 지원하는거 같고 이슈가 있으나 저의 경우 동작하긴 합니다.
+
+```shell {1}
+hbc-disassembler main.jsbundle ./my_output_file.hasm
+
+[+] Disassembly output wrote to "./my_output_file.hasm"
+```
+
+**my_output_file.hasm** 파일
+![my_output_file.hasm](/posts/react-native-hermes-reverse-env-key/react-native-hermes-reverse-env-key-my-output-file-hasm.png)
+
+**my_output-file.js** 파일
+![my_output_file.js](/posts/react-native-hermes-reverse-env-key/react-native-hermes-reverse-env-key-my-output-file-js.png)
+
+## 결론
+
+두 가지 도구를 활용해 React Native 앱 번들 내부에 포함된 중요한 키가 그대로 노출되는 것을 확인했습니다. 이처럼 클라이언트에 포함된 코드는 누구나 분석할 수 있기 때문에, 민감한 정보는 절대 앱 번들에 포함되면 안 됩니다.
+
+### 1. 백엔드 API를 통해 안전하게 관리하기
+
+중요한 키(예: API 키, 비밀 토큰 등)는 서버(백엔드) 환경에서 안전하게 보관하고, 앱에서는 백엔드 API를 통해 간접적으로 호출하는 방식을 사용해야 합니다.
+
+### 2. Expo만 사용하는 경우
+
+프라이빗 키 같은 중요 정보를 `EXPO_PUBLIC_` 저장하면 안됩니다.
+
+- https://docs.expo.dev/guides/environment-variables/
+
+Expo API Routes 를 사용하는 방법이 있습니다.
+
+- https://docs.expo.dev/router/reference/api-routes/
+- https://expo.dev/blog/expo-announces-eas-hosting-service
+
+### 그 외
+
+난독화, iOS의 [Keychain services](https://developer.apple.com/documentation/security/keychain-services), Android의 [Keystore system](https://developer.android.com/privacy-and-security/keystore?hl=ko) 등 여러가지를 고려하여 중요 정보를 저장해야 합니다.
+
+## 용어 정리
+
+**Disassemble**
+
+- 정의: 바이트코드나 기계어를 어셈블리어 같은 **저수준** 언어로 변환하는 작업
+- 결과물: 사람이 읽을 수 있지만 매우 로우 레벨의 코드
+
+**Decompile**
+
+- 정의: 바이트코드나 기계어를 **고수준** 언어(예: JavaScript)로 복원하는 작업
+- 결과물: 원래 개발자가 작성한 코드에 가까운 수준의 코드
