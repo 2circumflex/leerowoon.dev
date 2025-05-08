@@ -20,10 +20,10 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="h-6"></div>
+    <header className="">
+      <div className="h-[20px]"></div>
       <div className="mx-auto max-w-screen-xl px-4">
-        <div className="mx-auto max-w-[900px] bg-background rounded-2xl border overflow-hidden shadow-sm dark:shadow-gray-700/50">
+        <div className="mx-auto max-w-[900px]">
           <div className="flex h-14 items-center justify-between px-3">
             <Link
               href="/"
