@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { GoMoveToTop } from "react-icons/go";
 
 import { HeadingItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,13 @@ interface TOCSidebarProps {
 
 export default function TOCSidebar({ toc }: TOCSidebarProps) {
   const activeIdList = useHeadingsObserver("h2, h3");
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <aside className="not-prose hidden xl:block absolute -top-[200px] left-full -mb-[100px] h-[calc(100%+150px)]">
@@ -36,6 +44,14 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
             })}
           </ul>
         </div>
+        <button
+          onClick={scrollToTop}
+          className="mt-4 w-full flex items-center justify-center rounded-sm border border-foreground/50 p-2 text-foreground transition-colors hover:border-pink-600 hover:bg-pink-700 hover:text-white"
+          aria-label="맨 위로 이동"
+        >
+          <GoMoveToTop size={16} />
+          <span className="text-sm ml-2">맨 위로</span>
+        </button>
       </div>
     </aside>
   );
