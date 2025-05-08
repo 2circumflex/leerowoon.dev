@@ -7,7 +7,7 @@ export default async function RecentPost() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row justify-between items-center">
-        <h2 className="text-2xl font-bold">최근 포스트</h2>
+        <h2 className="text-2xl font-bold text-foreground/70">최근 포스트</h2>
         <Link href="/posts" className="text-md text-muted-foreground">
           더보기 →
         </Link>
