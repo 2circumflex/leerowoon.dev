@@ -36,6 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const SKILLS = [
   "React Native",
+  "Expo",
   "iOS",
   "Android",
   "React",
