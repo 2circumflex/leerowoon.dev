@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PostsPage() {
   return (
-    <div className="container mx-auto max-w-[900px] mt-32 mb-16 flex flex-col p-2 px-6">
+    <div className="container mx-auto max-w-[900px] mt-12 mb-16 flex flex-col p-2 px-6">
       <PostList />
     </div>
   );

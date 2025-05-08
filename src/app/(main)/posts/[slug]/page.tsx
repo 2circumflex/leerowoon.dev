@@ -57,7 +57,7 @@ export default async function PostDetailPage({
   const toc = parseToc(post.content);
 
   return (
-    <div className="prose dark:prose-invert container mx-auto max-w-[750px] mt-36 mb-16 flex flex-col p-2 px-6">
+    <div className="prose dark:prose-invert container mx-auto max-w-[750px] mt-12 mb-16 flex flex-col p-2 px-6">
       <PostHeader post={post} />
       <div className="relative">
         <PostBody post={post} />
