@@ -7,7 +7,7 @@ export default async function TagList() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-8">태그 목록</h1>
+      <h1 className="text-2xl font-bold text-foreground/70 mb-8">태그 목록</h1>
       <div className="mt-4 mb-0 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <Link href={`/tags/${tag}`} key={tag} className="no-underline">
