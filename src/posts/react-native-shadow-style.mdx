@@ -1,0 +1,258 @@
+---
+title: "React Native의 Shadow 스타일"
+desc: "React Native에서 그림자를 구현하는 3가지 방법(Shadow Props, dropShadow, boxShadow)과 각각의 특징 및 플랫폼 간 차이점을 비교 설명합니다."
+thumbnail: /posts/react-native-shadow-style/thumbnail.png
+tags: ["react-native", "dropShadow", "boxShadow"]
+createdAt: 2025-05-13T14:30:52.385Z
+modifiedAt: 2025-05-13T14:30:52.385Z
+---
+
+## 들어가기 전에
+
+React Native에서 그림자(Shadow)를 구현하는 방법은 크게 3가지가 있습니다.
+기존 Shadow props 방식 외에도, React Native 0.76부터는 dropShadow와 boxShadow가 새롭게 도입되어 총 3가지 그림자 구현 방법을 선택할 수 있습니다.
+이 글에서는 각각의 방식이 어떤 특징을 가지는지 간단히 살펴보겠습니다.
+
+## 1. Shadow Props
+
+React Native에서 그림자 효과를 구현할 때 가장 흔히 사용되던 방식입니다.
+플랫폼별로 스타일 속성이 다르기 때문에 `Platform.select`를 사용해 Android와 iOS 각각에 맞는 속성을 따로 지정해야 합니다.
+
+하지만 두 플랫폼 간 지원 방식의 차이로 인해 동일한 UI를 구현하기 어려운 한계가 있습니다.
+예를 들어 iOS는 shadowOffset, shadowOpacity, shadowRadius 등의 속성을 지원하지만, Android는 elevation만 제공됩니다.
+이로 인해 플랫폼마다 그림자 표현이 달라지고, 결국 외부 라이브러리에 의존해야 하는 경우가 생깁니다.
+
+```tsx {24,33}
+import { Platform, StyleSheet, View } from "react-native";
+
+export default function Shadow() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.rect} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rect: {
+    width: 150,
+    height: 150,
+    backgroundColor: "white",
+    borderColor: "red",
+    borderWidth: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "blue",
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        shadowColor: "blue", // Android API 28 이상에서만 작동
+        elevation: 10,
+      },
+    }),
+  },
+});
+```
+
+플랫폼마다 그림자 스타일이 다르게 보입니다.
+![Shadow Props](/posts/react-native-shadow-style/react-native-shadow-style-shadow-props.png)
+
+### 라이브러리 사용
+
+앞서 언급한 플랫폼 간 차이로 인해, 동일한 그림자 스타일을 구현하려면 외부 라이브러리를 사용하는 방법이 있습니다.
+
+- [react-native-shadow-2](https://github.com/ftzi/react-native-shadow-2)
+
+```tsx
+import { Shadow } from "react-native-shadow-2";
+
+<Shadow
+  distance={15}
+  startColor={"#eb9066d8"}
+  endColor={"#ff00ff10"}
+  offset={[3, 4]}
+>
+  <View />
+</Shadow>;
+```
+
+현재는 [NPM 패키지](https://www.npmjs.com/package/react-native-shadow-2)에 이렇게 적혀있습니다.
+React Native 0.76에서 크로스 플랫폼 그림자(shadow)를 지원하니, 이 라이브러리보다 더 선호되어야 합니다.
+![react-native-shadow-2 note](/posts/react-native-shadow-style/react-native-shadow-style-shadow2-newfeature.png)
+
+## 2. DropShadow 스타일
+
+React Native 0.76 버전부터는 **dropShadow**가 추가되었습니다.
+이 스타일은 Android에서만 작동합니다. 그래서 **Platform.select**를 사용해 구현해야 합니다.
+
+`filter: 'drop-shadow(0 0 20 rgba(0, 0, 255, 0.7))'` 스타일은 순서대로 offsetX, offsetY, spreadDistance, color값을 나타냅니다.
+
+- offsetX : 그림자의 수평 위치입니다. 양수면 그림자가 오른쪽으로, 음수면 왼쪽으로 이동합니다.
+- offsetY : 그림자의 수직 위치입니다. 양수면 아래쪽으로, 음수면 위쪽으로 이동합니다.
+- spreadDistance : Guassian blur 알고리즘에 사용되는 표준 편차를 나타냅니다. 값이 클수록 그림자가 더 흐려집니다. 음수가 아닌 값만 유효합니다. 기본값은 0입니다.
+- color : 그림자의 색상입니다. 기본값은 검은색입니다.
+
+```tsx {33,34,36}
+import { Platform, StyleSheet, View } from "react-native";
+
+export default function DropShadow() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.rect} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rect: {
+    width: 150,
+    height: 150,
+    backgroundColor: "white",
+    borderColor: "red",
+    borderWidth: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "blue",
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowOpacity: 0.7,
+        shadowRadius: 10,
+      },
+      android: {
+        filter: [
+          {
+            dropShadow: {
+              offsetX: 0,
+              offsetY: 0,
+              standardDeviation: 10,
+              color: "rgba(0, 0, 255, 0.7)",
+            },
+          },
+        ],
+      },
+    }),
+  },
+});
+```
+
+<Callout type="info">
+  `filter: 'drop-shadow(0 0 20 rgba(0, 0, 255, 0.7))'` 이렇게 작성해도 됩니다.
+</Callout>
+
+### 제약사항
+
+- filter는 [New Architecture](https://reactnative.dev/architecture/landing-page)에서만 사용할 수 있습니다.
+- dropShadow는 Android만 지원합니다.
+- boxShadow처럼 inset을 지원하지 않습니다
+
+## 3. BoxShadow 스타일 ✨
+
+React Native 0.76 버전부터는 **boxShadow** 속성이 도입되어, 웹에서 사용하는 CSS box-shadow와 유사하게 iOS와 Android 모두에서 동일한 그림자 효과를 구현할 수 있습니다.
+
+`boxShadow: "0 0 10 7 rgba(0, 0, 255, 0.7)"` 스타일은 순서대로 offsetX, offsetY, blurRadius, spreadDistance, color값을 나타냅니다.
+
+- offsetX : 그림자의 수평 위치입니다. 양수면 그림자가 오른쪽으로, 음수면 왼쪽으로 이동합니다.
+- offsetY : 그림자의 수직 위치입니다. 양수면 아래쪽으로, 음수면 위쪽으로 이동합니다.
+- blurRadius : Guassian blur 알고리즘에 사용되는 반경을 나타냅니다. 값이 클수록 그림자가 더 흐려집니다. 음수가 아닌 값만 유효합니다. 기본값은 0입니다.
+- spreadDistance : 그림자가 얼마나 커지거나 작아지는지. 양수 값은 그림자를 늘리고 음수 값은 그림자를 축소합니다.
+- color : 그림자의 색상입니다. 기본값은 검은색입니다.
+
+```tsx {23}
+import { StyleSheet, View } from "react-native";
+
+export default function BoxShadow() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.rect} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rect: {
+    width: 150,
+    height: 150,
+    backgroundColor: "white",
+    borderColor: "red",
+    borderWidth: 10,
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 10,
+        spreadDistance: 7,
+        color: "rgba(0, 0, 255, 0.7)",
+      },
+    ],
+  },
+});
+```
+
+<Callout type="info">
+  `boxShadow: '0 0 10 7 rgba(0, 0, 255, 0.7)'` 이렇게 작성해도 됩니다.
+</Callout>
+
+동일한 그림자 스타일을 보여주고 있습니다.
+![BoxShadow](/posts/react-native-shadow-style/react-native-shadow-style-box-shadow.png)
+
+### inset 속성
+
+inset을 사용하면 그림자가 박스 안쪽에 생깁니다.
+
+```tsx {8}
+boxShadow: [
+  {
+    offsetX: 0,
+    offsetY: 0,
+    blurRadius: 10,
+    spreadDistance: 7,
+    color: 'rgba(0, 0, 255, 0.7)',
+    inset: true,
+  },
+],
+```
+
+또는
+
+```tsx
+boxShadow: "inset 0 0 10 7 rgba(0, 0, 255, 0.7)";
+```
+
+![BoxShadow inset](/posts/react-native-shadow-style/react-native-shadow-style-box-shadow-inset.png)
+
+### 제약사항
+
+- [New Architecture](https://reactnative.dev/architecture/landing-page)에서만 사용할 수 있습니다.
+- Outset shadow는 Android 9+에서 지원됩니다.
+- Inset shadow는 Android 10+에서 지원됩니다.
+
+## 참고 문서
+
+- [React Native - Shadow Props](https://reactnative.dev/docs/shadow-props)
+- [React Native - DropShadowValue Object Type](https://reactnative.dev/docs/dropshadowvalue)
+- [React Native - View Style Props#filter](https://reactnative.dev/docs/view-style-props#filter)
+- [React Native - BoxShadowValue Object Type](https://reactnative.dev/docs/boxshadowvalue)
+- [React Native 0.76 - New Architecture by default, React Native DevTools, and more#boxShadow](https://reactnative.dev/blog/2024/10/23/release-0.76-new-architecture#boxshadow)
+- [React Native 0.76.0-rc.1](https://github.com/facebook/react-native/releases/tag/v0.76.0-rc.1)
