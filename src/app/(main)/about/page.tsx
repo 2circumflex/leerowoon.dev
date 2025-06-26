@@ -59,7 +59,7 @@ export default function AboutPage() {
       <section className="flex flex-col justify-center items-center gap-4">
         <FixedSizeImgWithPlaceholder
           className="rounded-full size-28"
-          src="/images/profile_square.jpg"
+          src="/images/character_profile_square.png"
           alt="profile"
           width={112}
           height={112}
