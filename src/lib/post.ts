@@ -78,12 +78,12 @@ export const parseToc = (content: string): HeadingItem[] => {
       heading
         .replace("# ", "")
         .replace("#", "")
-        .replace(/[\[\]:!@#$/%^&*()+=,.';]/g, "")
+        .replace(/[\[\]:~^!@#$/%^&*()+=,.';]/g, "")
+        .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "")
         .replace(/ /g, "-")
         .toLowerCase()
         .replace("?", "");
 
-    // 같은 링크가 이미 존재하는지 확인하고 고유한 링크 생성
     const existingCount = linkCounts.get(baseLink) || 0;
     linkCounts.set(baseLink, existingCount + 1);
 
