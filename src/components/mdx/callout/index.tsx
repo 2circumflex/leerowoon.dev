@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 
 import * as Icon from "./icons";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ interface CalloutProps extends PropsWithChildren {
 
 interface CalloutObjByType {
   [key: string]: {
-    icon: () => JSX.Element;
+    icon: () => ReactElement;
     className: string;
   };
 }

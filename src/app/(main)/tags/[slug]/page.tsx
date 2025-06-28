@@ -5,8 +5,9 @@ import PostListByTag from "@/components/tag-detail/post-list-by-tag";
 import { getAllTags } from "@/lib/post";
 
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: TagDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
   const pageTitle = `#${slug}`;
   const url = `${baseUrl}/tags/${slug}`;
 
@@ -35,12 +36,11 @@ export async function generateStaticParams() {
 }
 
 type TagDetailPageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export default async function TagDetailPage({
-  params: { slug },
-}: TagDetailPageProps) {
+export default async function TagDetailPage({ params }: TagDetailPageProps) {
+  const { slug } = await params;
   const tag = slug;
 
   return (

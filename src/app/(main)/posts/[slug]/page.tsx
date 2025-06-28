@@ -8,8 +8,9 @@ import Giscus from "@/components/post-detail/giscus";
 import TOCSidebar from "@/components/post-detail/toc-sidebar";
 
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: PostDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
   const post = await getPost(slug);
   const pageTitle = post.title;
   const description = post.desc;
@@ -47,12 +48,11 @@ export function generateStaticParams() {
 }
 
 type PostDetailPageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export default async function PostDetailPage({
-  params: { slug },
-}: PostDetailPageProps) {
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
+  const { slug } = await params;
   const post = await getPost(slug);
   const toc = parseToc(post.content);
 

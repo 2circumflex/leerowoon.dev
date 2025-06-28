@@ -26,12 +26,12 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
       <div className="sticky top-[200px] z-10 ml-[5rem] mt-[200px] w-[200px]">
         <div className="border-l px-4 py-2">
           <ul className="text-sm">
-            {toc.map((item) => {
+            {toc.map((item, index) => {
               const isH3 = item.indent === 1;
               const isIntersecting = activeIdList.includes(item.link);
               return (
                 <li
-                  key={item.link}
+                  key={`${item.link}-${index}`}
                   className={cn(
                     isH3 && "ml-3",
                     isIntersecting && "font-medium text-pink-600",

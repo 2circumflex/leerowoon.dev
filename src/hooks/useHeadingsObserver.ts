@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export const useHeadingsObserver = (query: string) => {
-  const observer = useRef<IntersectionObserver>();
+  const observer = useRef<IntersectionObserver | null>(null);
   const [activeIdList, setActiveIdList] = useState<string[]>([]);
   const [tempId, setTempId] = useState("");
 

@@ -66,19 +66,34 @@ export const getAllTags = async (): Promise<string[]> => {
 export const parseToc = (content: string): HeadingItem[] => {
   const regex = /^(##|###) (.*$)/gim;
   const headingList = content.match(regex);
-  return (
-    headingList?.map((heading: string) => ({
-      text: heading.replace("##", "").replace("#", ""),
-      link:
-        "#" +
-        heading
-          .replace("# ", "")
-          .replace("#", "")
-          .replace(/[\[\]:!@#$/%^&*()+=,.';]/g, "")
-          .replace(/ /g, "-")
-          .toLowerCase()
-          .replace("?", ""),
+
+  if (!headingList) return [];
+
+  const linkCounts = new Map<string, number>();
+
+  return headingList.map((heading: string) => {
+    const text = heading.replace("##", "").replace("#", "").trim();
+    const baseLink =
+      "#" +
+      heading
+        .replace("# ", "")
+        .replace("#", "")
+        .replace(/[\[\]:!@#$/%^&*()+=,.';]/g, "")
+        .replace(/ /g, "-")
+        .toLowerCase()
+        .replace("?", "");
+
+    // 같은 링크가 이미 존재하는지 확인하고 고유한 링크 생성
+    const existingCount = linkCounts.get(baseLink) || 0;
+    linkCounts.set(baseLink, existingCount + 1);
+
+    const uniqueLink =
+      existingCount > 0 ? `${baseLink}-${existingCount + 1}` : baseLink;
+
+    return {
+      text,
+      link: uniqueLink,
       indent: (heading.match(/#/g)?.length || 2) - 2,
-    })) || []
-  );
+    };
+  });
 };
