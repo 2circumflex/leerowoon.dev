@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 플랫폼마다 그림자 스타일이 다르게 보입니다.
 ![Shadow Props](/posts/react-native-shadow-style/react-native-shadow-style-shadow-props.png)
 
-### 라이브러리 사용
+### 1-1. 라이브러리 사용
 
 앞서 언급한 플랫폼 간 차이로 인해, 동일한 그림자 스타일을 구현하려면 외부 라이브러리를 사용하는 방법이 있습니다.
 
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
 
 ![DropShadow](/posts/react-native-shadow-style/react-native-shadow-style-drop-shadow.png)
 
-### 요구사항
+### 2-1. 요구사항
 
 - filter는 [New Architecture](https://reactnative.dev/architecture/landing-page)에서만 사용할 수 있습니다.
 - dropShadow는 Android만 지원합니다.
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
 동일한 그림자 스타일을 보여주고 있습니다.
 ![BoxShadow](/posts/react-native-shadow-style/react-native-shadow-style-box-shadow.png)
 
-### inset 속성
+### 3-1. inset 속성
 
 inset을 사용하면 그림자가 박스 안쪽에 생깁니다.
 
@@ -244,7 +244,7 @@ boxShadow: "inset 0 0 10 7 rgba(0, 0, 255, 0.7)";
 
 ![BoxShadow inset](/posts/react-native-shadow-style/react-native-shadow-style-box-shadow-inset.png)
 
-### 요구사항
+### 3-2. 요구사항
 
 - [New Architecture](https://reactnative.dev/architecture/landing-page)에서만 사용할 수 있습니다.
 - Outset shadow는 Android 9+에서 지원합니다.
