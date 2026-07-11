@@ -9,7 +9,7 @@ export default function PostHeader({ post }: { post: Post }) {
   return (
     <div className="flex flex-col">
       <FixedSizeImgWithPlaceholder
-        className="mt-0 w-full aspect-video object-cover rounded-lg border dark:border-none"
+        className="mt-0 w-full h-auto aspect-video object-cover rounded-lg border dark:border-none"
         src={post.thumbnail}
         alt={post.title}
         width={700}

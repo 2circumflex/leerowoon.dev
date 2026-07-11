@@ -20,6 +20,7 @@ export default function RootLayout({
     <html
       lang="ko"
       className="h-full scroll-smooth overflow-y-scroll"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <body className="font-pretendard flex min-h-screen flex-col">

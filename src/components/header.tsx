@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -9,6 +10,13 @@ import { cn } from "@/lib/utils";
 const Header = () => {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Client-only mount gate to avoid SSR/client theme hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const navigation = [
     { name: "Posts", href: "/posts" },
@@ -55,12 +63,12 @@ const Header = () => {
                     onClick={handleThemeToggle}
                     className="ml-2 rounded-md p-2 text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
                     aria-label={
-                      theme === "dark"
+                      mounted && theme === "dark"
                         ? "라이트 모드로 전환"
                         : "다크 모드로 전환"
                     }
                   >
-                    {theme === "dark" ? (
+                    {mounted && theme === "dark" ? (
                       <FiSun onClick={handleThemeToggle} />
                     ) : (
                       <FiMoon onClick={handleThemeToggle} />

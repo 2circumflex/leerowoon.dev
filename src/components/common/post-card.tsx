@@ -21,7 +21,7 @@ export default function PostCard({ post }: { post: Post }) {
         </div>
         <div className="hidden sm:block sm:w-[160px] md:w-[200px] shrink-0">
           <FixedSizeImgWithPlaceholder
-            className="w-full aspect-video object-cover rounded-lg group-hover:scale-105 transition-transform duration-300 border dark:border-none"
+            className="w-full h-auto aspect-video object-cover rounded-lg group-hover:scale-105 transition-transform duration-300 border dark:border-none"
             src={post.thumbnail}
             alt={post.title}
             width={280}
